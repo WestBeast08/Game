@@ -89,7 +89,8 @@ public class ShadowDance extends AbstractGame  {
                     }
 
                     if (lane != null) {
-                        switch (splitText[1]) {
+                        String type = splitText[1];
+                        switch (type) {
                             case "Normal":
                                 Note note = new Note(dir, Integer.parseInt(splitText[2]));
                                 lane.addNote(note);
@@ -99,6 +100,13 @@ public class ShadowDance extends AbstractGame  {
                                 lane.addHoldNote(holdNote);
                                 break;
                             //case for all 4 special notes (inherited from normal notes)
+                            case "DoubleScore":
+                            case "Bomb":
+                            case "SpeedUp":
+                            case "SlowDown":
+                                Note specialNote = new Note(type, Integer.parseInt(splitText[2]));
+                                lane.addNote(specialNote);
+                                break;
                         }
                     }
 

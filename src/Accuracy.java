@@ -22,6 +22,13 @@ public class Accuracy {
     private static final int RENDER_FRAMES = 30;
     private String currAccuracy = null;
     private int frameCount = 0;
+    public static final String DOUBLE_SCORE = "Double Score";
+    public static final String SPEED_UP = "Speed Up";
+    public static final String SLOW_DOWN = "Slow Down";
+    public static final String LANE_CLEAR = "Lane Clear";
+    private static final int SPECIAL_RADIUS = 50;
+    private static final int DOUBLE_RADIUS = 450;
+    private boolean doubleScore = false;
 
     public void setAccuracy(String accuracy) {
         currAccuracy = accuracy;

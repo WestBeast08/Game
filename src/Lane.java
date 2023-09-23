@@ -35,6 +35,9 @@ public class Lane {
             case "Down":
                 relevantKey = Keys.DOWN;
                 break;
+            case "Special":
+                relevantKey = Keys.SPACE;
+                break;
         }
     }
 
