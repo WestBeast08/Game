@@ -7,12 +7,14 @@ import javax.sound.sampled.*;
 public class Track extends Thread {
     private AudioInputStream stream;
     private Clip clip;
+    public String file;
 
     public Track(String file) {
         try {
             stream = AudioSystem.getAudioInputStream(new java.io.File(file));
             clip = (Clip) AudioSystem.getLine(new DataLine.Info(Clip.class,stream.getFormat()));
             clip.open(stream);
+            this.file = file;
         } catch(Exception ex) {
             ex.printStackTrace();
         }
@@ -32,6 +34,5 @@ public class Track extends Thread {
         } catch (Exception ex) {
             ex.printStackTrace();
         }
-
     }
 }

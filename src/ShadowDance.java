@@ -2,6 +2,7 @@ import bagel.*;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.util.concurrent.ThreadLocalRandom;
 
 /**
  * Skeleton Code for SWEN20003 Project 2, Semester 2, 2023
@@ -11,37 +12,47 @@ import java.io.FileReader;
 
 // ShadowDance code adapted from full A1 solution by Stella Li
 public class ShadowDance extends AbstractGame  {
+    private int test = ThreadLocalRandom.current().nextInt();
     private final static int WINDOW_WIDTH = 1024;
     private final static int WINDOW_HEIGHT = 768;
     private final static String GAME_TITLE = "SHADOW DANCE";
     private final Image BACKGROUND_IMAGE = new Image("res/background.png");
-    private final static String CSV_FILE = "res/level1-60.csv";
+    private final static String LEVEL_1_CSV = "res/level1.csv";
+    private final static String LEVEL_2_CSV = "res/level2.csv";
+    private final static String LEVEL_3_CSV = "res/level3.csv";
     public final static String FONT_FILE = "res/FSO8BITR.TTF";
     private final static int TITLE_X = 220;
     private final static int TITLE_Y = 250;
     private final static int INS_X_OFFSET = 100;
     private final static int INS_Y_OFFSET = 190;
     private final static int SCORE_LOCATION = 35;
+    private final static int END_MESSAGE_Y = 300;
+    private final static int END_INSTRUCTION_Y = 500;
     private final Font TITLE_FONT = new Font(FONT_FILE, 64);
     private final Font INSTRUCTION_FONT = new Font(FONT_FILE, 24);
     private final Font SCORE_FONT = new Font(FONT_FILE, 30);
-    private static final String INSTRUCTIONS = "Press Space to Start\nUse Arrow Keys to Play";
+    private static final String INSTRUCTIONS = "Select levels with\nnumber keys\n\n    1       2       3";
     private static final int CLEAR_SCORE = 150;
     private static final String CLEAR_MESSAGE = "CLEAR!";
     private static final String TRY_AGAIN_MESSAGE = "TRY AGAIN";
+    private static final String RETURN_MESSAGE = "Press space to return to level selection";
     private final Accuracy accuracy = new Accuracy();
-    private final Lane[] lanes = new Lane[4];
+    private Lane[] lanes = new Lane[4];
     private int numLanes = 0;
     private int score = 0;
     private static int currFrame = 0;
-    private Track track = new Track("res/track1.wav");
+    private Track track = new Track("res/giornos_theme.wav");
+    private Track menu = new Track("res/Wii Music.wav");
+    private Track win = new Track("res/Win.wav");
+    private Track lose = new Track("res/Lose.wav");
     private boolean started = false;
     private boolean finished = false;
     private boolean paused = false;
+    private final static int RESTART = 0;
 
     public ShadowDance(){
         super(WINDOW_WIDTH, WINDOW_HEIGHT, GAME_TITLE);
-        readCsv();
+        readCsv(LEVEL_1_CSV);
     }
 
 
@@ -55,8 +66,8 @@ public class ShadowDance extends AbstractGame  {
 
 
 
-    private void readCsv() {
-        try (BufferedReader br = new BufferedReader(new FileReader(CSV_FILE))) {
+    private void readCsv(String csvFile) {
+        try (BufferedReader br = new BufferedReader(new FileReader(csvFile))) {
             String textRead;
             while ((textRead = br.readLine()) != null) {
                 String[] splitText = textRead.split(",");
@@ -87,6 +98,7 @@ public class ShadowDance extends AbstractGame  {
                                 HoldNote holdNote = new HoldNote(dir, Integer.parseInt(splitText[2]));
                                 lane.addHoldNote(holdNote);
                                 break;
+                            //case for all 4 special notes (inherited from normal notes)
                         }
                     }
 
@@ -114,24 +126,35 @@ public class ShadowDance extends AbstractGame  {
 
         if (!started) {
             // starting screen
+            menu.run();
             TITLE_FONT.drawString(GAME_TITLE, TITLE_X, TITLE_Y);
             INSTRUCTION_FONT.drawString(INSTRUCTIONS,
                     TITLE_X + INS_X_OFFSET, TITLE_Y + INS_Y_OFFSET);
 
             if (input.wasPressed(Keys.SPACE)) {
                 started = true;
+                menu.pause();
                 track.start();
             }
         } else if (finished) {
             // end screen
+            track.pause();
             if (score >= CLEAR_SCORE) {
                 TITLE_FONT.drawString(CLEAR_MESSAGE,
                         WINDOW_WIDTH/2 - TITLE_FONT.getWidth(CLEAR_MESSAGE)/2,
-                        WINDOW_HEIGHT/2);
+                        END_MESSAGE_Y);
+                win.run();
             } else {
                 TITLE_FONT.drawString(TRY_AGAIN_MESSAGE,
                         WINDOW_WIDTH/2 - TITLE_FONT.getWidth(TRY_AGAIN_MESSAGE)/2,
-                        WINDOW_HEIGHT/2);
+                        END_MESSAGE_Y);
+                lose.run();
+            }
+            INSTRUCTION_FONT.drawString(RETURN_MESSAGE,
+                        WINDOW_WIDTH/2 - INSTRUCTION_FONT.getWidth(RETURN_MESSAGE)/2,
+                        END_INSTRUCTION_Y);
+            if(input.wasPressed(Keys.SPACE)) {
+                restartGame();
             }
         } else {
             // gameplay
@@ -176,5 +199,22 @@ public class ShadowDance extends AbstractGame  {
             }
         }
         return true;
+    }
+
+    private void restartGame() {
+        win.pause();
+        lose.pause();
+        started = false;
+        finished = false;
+        score = RESTART;
+        currFrame = RESTART;
+        numLanes = RESTART;
+        menu = new Track(menu.file);
+        win = new Track(win.file);
+        lose = new Track(lose.file);
+        track = new Track(track.file);
+        lanes = new Lane[4];
+        accuracy.setAccuracy("");
+        readCsv(LEVEL_1_CSV);
     }
 }

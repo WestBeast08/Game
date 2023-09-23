@@ -47,8 +47,10 @@ public class Note {
         if (isActive()) {
             // evaluate accuracy of the key press
             int score = accuracy.evaluateScore(y, targetHeight, input.wasPressed(relevantKey));
+            //gets overriden for special notes, only calculating if distance is right, then
 
             if (score != Accuracy.NOT_SCORED) {
+                //returning 15, speeding up/slowing down, and also setting accuracy message
                 deactivate();
                 return score;
             }
