@@ -90,9 +90,10 @@ public class ShadowDance extends AbstractGame  {
 
                     if (lane != null) {
                         String type = splitText[1];
+                        Note note;
                         switch (type) {
                             case "Normal":
-                                Note note = new Note(dir, Integer.parseInt(splitText[2]));
+                                note = new Note(dir, Integer.parseInt(splitText[2]));
                                 lane.addNote(note);
                                 break;
                             case "Hold":
@@ -101,12 +102,23 @@ public class ShadowDance extends AbstractGame  {
                                 break;
                             //case for all 4 special notes (inherited from normal notes)
                             case "DoubleScore":
-                            case "Bomb":
-                            case "SpeedUp":
-                            case "SlowDown":
-                                Note specialNote = new Note(type, Integer.parseInt(splitText[2]));
-                                lane.addNote(specialNote);
+                                note = new DoubleScoreNote(type, Integer.parseInt(splitText[2]));
+                                lane.addNote(note);
                                 break;
+                            case "Bomb":
+                                note = new BombNote(type, Integer.parseInt(splitText[2]));
+                                lane.addNote(note);
+                                break;
+                            case "SpeedUp":
+                                note = new SpeedUpNote(type, Integer.parseInt(splitText[2]));
+                                lane.addNote(note);
+                                break;
+                            case "SlowDown":
+                                note = new SlowDownNote(type, Integer.parseInt(splitText[2]));
+                                lane.addNote(note);
+                                break;
+                            default:
+                                throw new IllegalStateException("Unexpected value: " + type);
                         }
                     }
 

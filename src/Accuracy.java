@@ -16,6 +16,7 @@ public class Accuracy {
     public static final String MISS = "MISS";
     private static final int PERFECT_RADIUS = 15;
     private static final int GOOD_RADIUS = 50;
+    public static final int SPECIAL_RADIUS = 50;
     private static final int BAD_RADIUS = 100;
     private static final int MISS_RADIUS = 200;
     private static final Font ACCURACY_FONT = new Font(ShadowDance.FONT_FILE, 40);
@@ -26,7 +27,6 @@ public class Accuracy {
     public static final String SPEED_UP = "Speed Up";
     public static final String SLOW_DOWN = "Slow Down";
     public static final String LANE_CLEAR = "Lane Clear";
-    private static final int SPECIAL_RADIUS = 50;
     private static final int DOUBLE_RADIUS = 450;
     private boolean doubleScore = false;
 

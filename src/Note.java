@@ -17,6 +17,10 @@ public class Note {
         this.appearanceFrame = appearanceFrame;
     }
 
+    public int getY() {
+        return y;
+    }
+
     public boolean isActive() {
         return active;
     }
@@ -56,7 +60,6 @@ public class Note {
             }
 
         }
-
         return 0;
     }
 
