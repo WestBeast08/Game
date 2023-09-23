@@ -23,16 +23,26 @@ public class Accuracy {
     private static final int RENDER_FRAMES = 30;
     private String currAccuracy = null;
     private int frameCount = 0;
+    private int doubleCount = 0;
     public static final String DOUBLE_SCORE = "Double Score";
     public static final String SPEED_UP = "Speed Up";
     public static final String SLOW_DOWN = "Slow Down";
     public static final String LANE_CLEAR = "Lane Clear";
-    private static final int DOUBLE_RADIUS = 450;
+    private static final int DOUBLE_FRAMES = 450;
     private boolean doubleScore = false;
 
     public void setAccuracy(String accuracy) {
         currAccuracy = accuracy;
         frameCount = 0;
+    }
+
+    public void activateDoubleScore() {
+        doubleScore = true;
+        doubleCount = 0;
+    }
+
+    public boolean checkDoubleScore(){
+        return doubleScore;
     }
 
     public int evaluateScore(int height, int targetHeight, boolean triggered) {
@@ -64,10 +74,14 @@ public class Accuracy {
 
     public void update() {
         frameCount++;
+        doubleCount++;
         if (currAccuracy != null && frameCount < RENDER_FRAMES) {
             ACCURACY_FONT.drawString(currAccuracy,
                     Window.getWidth()/2 - ACCURACY_FONT.getWidth(currAccuracy)/2,
                     Window.getHeight()/2);
+        }
+        if (doubleCount > DOUBLE_FRAMES) {
+            doubleScore = false;
         }
     }
 }

@@ -5,8 +5,8 @@ import bagel.Window;
 public class DoubleScoreNote extends Note{
     private static final int DOUBLE_NOTE_SCORE = 0;
 
-    public DoubleScoreNote(String dir, int appearanceFrame) {
-        super(dir, appearanceFrame);
+    public DoubleScoreNote(String dir, int appearanceFrame, Lane lane) {
+        super(dir, appearanceFrame, lane);
     }
 
     @Override
@@ -17,6 +17,7 @@ public class DoubleScoreNote extends Note{
             if (input.wasPressed(relevantKey) && distance <= Accuracy.SPECIAL_RADIUS) {
                 accuracy.setAccuracy(Accuracy.DOUBLE_SCORE);
                 deactivate();
+                accuracy.activateDoubleScore();
                 return DOUBLE_NOTE_SCORE;
             }
             else if (getY() >= (Window.getHeight())) {

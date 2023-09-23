@@ -9,14 +9,16 @@ public class HoldNote {
     private static final int HEIGHT_OFFSET = 82;
     private final Image image;
     private final int appearanceFrame;
-    private final int speed = 2;
+    private static int speed = 2;
     private int y = 24;
     private boolean active = false;
     private boolean holdStarted = false;
     private boolean completed = false;
+    private final Lane lane;
 
-    public HoldNote(String dir, int appearanceFrame) {
+    public HoldNote(String dir, int appearanceFrame, Lane lane) {
         image = new Image("res/holdNote" + dir + ".png");
+        this.lane = lane;
         this.appearanceFrame = appearanceFrame;
     }
 
@@ -95,5 +97,9 @@ public class HoldNote {
      */
     private int getTopHeight() {
         return y - HEIGHT_OFFSET;
+    }
+
+    public static void incrementSpeed(int increment) {
+        speed += increment;
     }
 }

@@ -4,9 +4,10 @@ import bagel.Window;
 
 public class SlowDownNote extends Note{
     private static final int SLOW_DOWN_NOTE_SCORE = 15;
+    private static final int SLOW_DOWN_INCREMENT = -1;
 
-    public SlowDownNote(String dir, int appearanceFrame) {
-        super(dir, appearanceFrame);
+    public SlowDownNote(String dir, int appearanceFrame, Lane lane) {
+        super(dir, appearanceFrame, lane);
     }
 
     @Override
@@ -17,6 +18,8 @@ public class SlowDownNote extends Note{
             if (input.wasPressed(relevantKey) && distance <= Accuracy.SPECIAL_RADIUS) {
                 accuracy.setAccuracy(Accuracy.SLOW_DOWN);
                 deactivate();
+                Note.incrementSpeed(SLOW_DOWN_INCREMENT);
+                HoldNote.incrementSpeed(SLOW_DOWN_INCREMENT);
                 return SLOW_DOWN_NOTE_SCORE;
             }
             else if (getY() >= (Window.getHeight())) {

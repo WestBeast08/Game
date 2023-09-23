@@ -5,8 +5,8 @@ import bagel.Window;
 public class BombNote extends Note{
     private static final int BOMB_NOTE_SCORE = 0;
 
-    public BombNote(String dir, int appearanceFrame) {
-        super(dir, appearanceFrame);
+    public BombNote(String dir, int appearanceFrame, Lane lane) {
+        super(dir, appearanceFrame, lane);
     }
 
     @Override
@@ -17,6 +17,7 @@ public class BombNote extends Note{
             if (input.wasPressed(relevantKey) && distance <= Accuracy.SPECIAL_RADIUS) {
                 accuracy.setAccuracy(Accuracy.LANE_CLEAR);
                 deactivate();
+                lane.ActivateBomb();
                 return BOMB_NOTE_SCORE;
             }
             else if (getY() >= (Window.getHeight())) {

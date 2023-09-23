@@ -93,28 +93,28 @@ public class ShadowDance extends AbstractGame  {
                         Note note;
                         switch (type) {
                             case "Normal":
-                                note = new Note(dir, Integer.parseInt(splitText[2]));
+                                note = new Note(dir, Integer.parseInt(splitText[2]), lane);
                                 lane.addNote(note);
                                 break;
                             case "Hold":
-                                HoldNote holdNote = new HoldNote(dir, Integer.parseInt(splitText[2]));
+                                HoldNote holdNote = new HoldNote(dir, Integer.parseInt(splitText[2]), lane);
                                 lane.addHoldNote(holdNote);
                                 break;
                             //case for all 4 special notes (inherited from normal notes)
                             case "DoubleScore":
-                                note = new DoubleScoreNote(type, Integer.parseInt(splitText[2]));
+                                note = new DoubleScoreNote(type, Integer.parseInt(splitText[2]), lane);
                                 lane.addNote(note);
                                 break;
                             case "Bomb":
-                                note = new BombNote(type, Integer.parseInt(splitText[2]));
+                                note = new BombNote(type, Integer.parseInt(splitText[2]), lane);
                                 lane.addNote(note);
                                 break;
                             case "SpeedUp":
-                                note = new SpeedUpNote(type, Integer.parseInt(splitText[2]));
+                                note = new SpeedUpNote(type, Integer.parseInt(splitText[2]), lane);
                                 lane.addNote(note);
                                 break;
                             case "SlowDown":
-                                note = new SlowDownNote(type, Integer.parseInt(splitText[2]));
+                                note = new SlowDownNote(type, Integer.parseInt(splitText[2]), lane);
                                 lane.addNote(note);
                                 break;
                             default:

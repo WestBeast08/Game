@@ -17,6 +17,7 @@ public class Lane {
     private final int location;
     private int currNote = 0;
     private int currHoldNote = 0;
+    private boolean activeBomb = false;
 
     public Lane(String dir, int location) {
         this.type = dir;
@@ -49,6 +50,11 @@ public class Lane {
      * updates all the notes in the lane
      */
     public int update(Input input, Accuracy accuracy) {
+        if(activeBomb){
+            clearLane();
+            activeBomb = false;
+        }
+
         draw();
 
         for (int i = currNote; i < numNotes; i++) {
@@ -118,6 +124,23 @@ public class Lane {
         for (int j = currHoldNote; j < numHoldNotes; j++) {
             holdNotes[j].draw(location);
         }
+    }
+
+    private void clearLane() {
+        for(int i = currNote; i < numNotes; i++) {
+            if(notes[i].isActive()) {
+                notes[i].deactivate();
+            }
+        }
+        for(int j = currHoldNote; j < numHoldNotes; j++) {
+            if(holdNotes[j].isActive()) {
+                holdNotes[j].deactivate();
+            }
+        }
+    }
+
+    public void ActivateBomb(){
+        activeBomb = true;
     }
 
 }

@@ -4,9 +4,10 @@ import bagel.Window;
 
 public class SpeedUpNote extends Note{
     private static final int SPEED_UP_NOTE_SCORE = 15;
+    private static final int SPEED_UP_INCREMENT = 1;
 
-    public SpeedUpNote(String dir, int appearanceFrame) {
-        super(dir, appearanceFrame);
+    public SpeedUpNote(String dir, int appearanceFrame, Lane lane) {
+        super(dir, appearanceFrame, lane);
     }
 
     @Override
@@ -17,6 +18,8 @@ public class SpeedUpNote extends Note{
             if (input.wasPressed(relevantKey) && distance <= Accuracy.SPECIAL_RADIUS) {
                 accuracy.setAccuracy(Accuracy.SPEED_UP);
                 deactivate();
+                Note.incrementSpeed(SPEED_UP_INCREMENT);
+                HoldNote.incrementSpeed(SPEED_UP_INCREMENT);
                 return SPEED_UP_NOTE_SCORE;
             }
             else if (getY() >= (Window.getHeight())) {
