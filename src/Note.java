@@ -13,6 +13,7 @@ public class Note {
     private boolean completed = false;
     private static final int DOUBLE_SCORE = 2;
     protected final Lane lane;
+    private boolean special = false;
 
     public Note(String dir, int appearanceFrame, Lane lane) {
         image = new Image("res/note" + dir + ".png");
@@ -24,6 +25,12 @@ public class Note {
         return y;
     }
 
+    protected void setSpecial() {
+        special = true;
+    }
+    public boolean isSpecial(){
+        return special;
+    }
     public boolean isActive() {
         return active;
     }

@@ -143,4 +143,14 @@ public class Lane {
         activeBomb = true;
     }
 
+    public void checkCollisions(double enemyX, double enemyY) {
+        for(int i = currNote; i < numNotes; i++) {
+            if(notes[i].isActive() && !notes[i].isSpecial()) {
+                if(Math.hypot(Math.abs(enemyX - location), Math.abs(enemyY - notes[i].getY())) <= 104){
+                    notes[i].deactivate();
+                }
+            }
+        }
+    }
+
 }

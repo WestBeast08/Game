@@ -7,6 +7,7 @@ public class DoubleScoreNote extends Note{
 
     public DoubleScoreNote(String dir, int appearanceFrame, Lane lane) {
         super(dir, appearanceFrame, lane);
+        super.setSpecial();
     }
 
     @Override

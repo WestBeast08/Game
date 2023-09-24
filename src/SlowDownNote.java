@@ -8,6 +8,7 @@ public class SlowDownNote extends Note{
 
     public SlowDownNote(String dir, int appearanceFrame, Lane lane) {
         super(dir, appearanceFrame, lane);
+        super.setSpecial();
     }
 
     @Override

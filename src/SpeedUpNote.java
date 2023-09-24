@@ -8,6 +8,7 @@ public class SpeedUpNote extends Note{
 
     public SpeedUpNote(String dir, int appearanceFrame, Lane lane) {
         super(dir, appearanceFrame, lane);
+        super.setSpecial();
     }
 
     @Override

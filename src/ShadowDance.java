@@ -31,7 +31,10 @@ public class ShadowDance extends AbstractGame  {
     private final Font INSTRUCTION_FONT = new Font(FONT_FILE, 24);
     private final Font SCORE_FONT = new Font(FONT_FILE, 30);
     private static final String INSTRUCTIONS = "Select levels with\nnumber keys\n\n    1       2       3";
-    private static final int CLEAR_SCORE = 150;
+    private static final int LEVEL_1_CLEAR = 150;
+    private static final int LEVEL_2_CLEAR = 400;
+    private static final int LEVEL_3_CLEAR = 350;
+    private int clearScore;
     private static final String CLEAR_MESSAGE = "CLEAR!";
     private static final String TRY_AGAIN_MESSAGE = "TRY AGAIN";
     private static final String RETURN_MESSAGE = "Press space to return to level selection";
@@ -54,6 +57,7 @@ public class ShadowDance extends AbstractGame  {
     private final Guardian guardian = new Guardian();
     private boolean level3 = false;
     private ArrayList<Enemy> currentEnemies = new ArrayList<>();
+    private Enemy currentTarget = new Enemy();
 
     public ShadowDance(){
         super(WINDOW_WIDTH, WINDOW_HEIGHT, GAME_TITLE);
@@ -161,6 +165,7 @@ public class ShadowDance extends AbstractGame  {
                 menu.pause();
                 levelTrack = track1;
                 levelTrack.start();
+                clearScore = LEVEL_1_CLEAR;
             }
             else if (input.wasPressed(Keys.NUM_2)) {
                 readCsv(LEVEL_2_CSV);
@@ -168,6 +173,7 @@ public class ShadowDance extends AbstractGame  {
                 menu.pause();
                 levelTrack = track2;
                 levelTrack.start();
+                clearScore = LEVEL_2_CLEAR;
             }
             else if (input.wasPressed(Keys.NUM_3)) {
                 readCsv(LEVEL_3_CSV);
@@ -176,11 +182,12 @@ public class ShadowDance extends AbstractGame  {
                 levelTrack = track3;
                 levelTrack.start();
                 level3 = true;
+                clearScore = LEVEL_3_CLEAR;
             }
         } else if (finished) {
             // end screen
             levelTrack.pause();
-            if (score >= CLEAR_SCORE) {
+            if (score >= clearScore) {
                 TITLE_FONT.drawString(CLEAR_MESSAGE,
                         WINDOW_WIDTH/2 - TITLE_FONT.getWidth(CLEAR_MESSAGE)/2,
                         END_MESSAGE_Y);
@@ -228,15 +235,26 @@ public class ShadowDance extends AbstractGame  {
                     }
                     guardian.draw();
                     if(input.wasPressed(Keys.LEFT_SHIFT)) {
-                        guardian.fireProjectile(700, 100); //enemy locations
+                        if(currFrame < 600) {
+                            guardian.fireProjectile(0, 0);
+                        }
+                        else {
+                            guardian.fireProjectile(currentTarget.getX(), currentTarget.getY()); //enemy locations
+                        }
                     }
+                    double min_distance = Math.hypot(WINDOW_WIDTH, WINDOW_HEIGHT);
                     for(Enemy i: currentEnemies) {
                         if(!i.isCompleted()){
-                            currentEnemyX = i.getX();
-                            currentEnemyY = i.getY();
                             i.update();
+                            if(i.distanceFromGuardian() <= min_distance) {
+                                min_distance = i.distanceFromGuardian();
+                                currentTarget = i;
+                            }
                             if(guardian.checkCollisions(i.getX(), i.getY())) {
                                 i.deactivate();
+                            }
+                            for(int j = 0; j < numLanes; j++) {
+                                lanes[j].checkCollisions(i.getX(), i.getY());
                             }
                         }
                     }
@@ -289,5 +307,6 @@ public class ShadowDance extends AbstractGame  {
         lanes = new Lane[4];
         accuracy.setAccuracy("");
         level3 = false;
+        currentEnemies.clear();
     }
 }

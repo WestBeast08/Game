@@ -8,7 +8,7 @@ public class Guardian {
     private final Image GUARDIAN_IMAGE = new Image("res/guardian.png");
     private ArrayList<Projectile> currentProjectiles = new ArrayList<>();
 
-    public void fireProjectile(int targetX, int targetY) {
+    public void fireProjectile(double targetX, double targetY) {
         Projectile newProjectile = new Projectile(targetX, targetY);
         currentProjectiles.add(newProjectile);
     }

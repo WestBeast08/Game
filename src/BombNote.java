@@ -7,6 +7,7 @@ public class BombNote extends Note{
 
     public BombNote(String dir, int appearanceFrame, Lane lane) {
         super(dir, appearanceFrame, lane);
+        super.setSpecial();
     }
 
     @Override

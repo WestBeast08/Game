@@ -53,4 +53,8 @@ public class Enemy {
     public void draw() {
         ENEMY_IMAGE.draw(xPosition, yPosition);
     }
+
+    public double distanceFromGuardian() {
+        return Math.hypot(Math.abs(xPosition - Guardian.GUARDIAN_X), Math.abs(yPosition - Guardian.GUARDIAN_Y));
+    }
 }
