@@ -53,7 +53,7 @@ public class ShadowDance extends AbstractGame  {
     private final static int RESTART = 0;
     private final Guardian guardian = new Guardian();
     private boolean level3 = false;
-    private ArrayList<Enemy> currentEnemies = new ArrayList<Enemy>();
+    private ArrayList<Enemy> currentEnemies = new ArrayList<>();
 
     public ShadowDance(){
         super(WINDOW_WIDTH, WINDOW_HEIGHT, GAME_TITLE);
@@ -213,7 +213,9 @@ public class ShadowDance extends AbstractGame  {
                 }
                 guardian.paused();
                 for(Enemy i: currentEnemies) {
-                    i.draw();
+                    if(!i.isCompleted()){
+                        i.draw();
+                    }
                 }
 
 
@@ -229,7 +231,14 @@ public class ShadowDance extends AbstractGame  {
                         guardian.fireProjectile(700, 100); //enemy locations
                     }
                     for(Enemy i: currentEnemies) {
-                        i.update();
+                        if(!i.isCompleted()){
+                            currentEnemyX = i.getX();
+                            currentEnemyY = i.getY();
+                            i.update();
+                            if(guardian.checkCollisions(i.getX(), i.getY())) {
+                                i.deactivate();
+                            }
+                        }
                     }
                     guardian.update();
 

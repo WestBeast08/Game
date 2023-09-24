@@ -9,9 +9,17 @@ public class Enemy {
     private final static int ENEMY_SPEED = 1;
     private double enemyVelocity = Math.copySign(1,(Math.random() * 2 - 1));
     private final static int COLLISION_RADIUS = 104;
+    private boolean completed = false;
 
-    public Enemy() {
-        //
+    public double getX() {
+        return xPosition;
+    }
+    public double getY() {
+        return yPosition;
+    }
+
+    public boolean isCompleted() {
+        return completed;
     }
 
     public void update() {
@@ -38,8 +46,8 @@ public class Enemy {
         //
     }
 
-    private void deactivate() {
-        //
+    public void deactivate() {
+        completed = true;
     }
 
     public void draw() {

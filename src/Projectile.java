@@ -9,6 +9,19 @@ public class Projectile {
     private final static int PROJECTILE_SPEED = 6;
     private final double angle;
     private final static DrawOptions ROTATION = new DrawOptions();
+    private boolean completed = false;
+    public final static int COLLISION_RADIUS = 62;
+
+    public boolean isCompleted() {
+        return completed;
+    }
+
+    public double getX() {
+        return xPosition;
+    }
+    public double getY() {
+        return yPosition;
+    }
 
     public Projectile(double targetX, double targetY) {
         angle = Math.atan((targetY-yPosition)/(targetX-xPosition)) + Math.PI;
@@ -20,12 +33,8 @@ public class Projectile {
         draw();
     }
 
-    private boolean hitCheck(Enemy enemy) {
-        return false;
-    }
-
-    private void deactivate() {
-        //
+    public void deactivate() {
+        completed = true;
     }
 
     public void draw() {
