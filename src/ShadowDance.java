@@ -2,6 +2,7 @@ import bagel.*;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.util.ArrayList;
 
 /**
  * Skeleton Code for SWEN20003 Project 2, Semester 2, 2023
@@ -50,6 +51,9 @@ public class ShadowDance extends AbstractGame  {
     private boolean finished = false;
     private boolean paused = false;
     private final static int RESTART = 0;
+    private final Guardian guardian = new Guardian();
+    private boolean level3 = false;
+    private ArrayList<Enemy> currentEnemies = new ArrayList<Enemy>();
 
     public ShadowDance(){
         super(WINDOW_WIDTH, WINDOW_HEIGHT, GAME_TITLE);
@@ -171,6 +175,7 @@ public class ShadowDance extends AbstractGame  {
                 menu.pause();
                 levelTrack = track3;
                 levelTrack.start();
+                level3 = true;
             }
         } else if (finished) {
             // end screen
@@ -206,9 +211,30 @@ public class ShadowDance extends AbstractGame  {
                 for (int i = 0; i < numLanes; i++) {
                     lanes[i].draw();
                 }
+                guardian.paused();
+                for(Enemy i: currentEnemies) {
+                    i.draw();
+                }
+
 
             } else {
                 currFrame++;
+                if(level3) {
+                    if(currFrame % 600 == 0 && currFrame != 0) {
+                        Enemy newEnemy = new Enemy();
+                        currentEnemies.add(newEnemy);
+                    }
+                    guardian.draw();
+                    if(input.wasPressed(Keys.LEFT_SHIFT)) {
+                        guardian.fireProjectile(700, 100); //enemy locations
+                    }
+                    for(Enemy i: currentEnemies) {
+                        i.update();
+                    }
+                    guardian.update();
+
+                }
+
                 for (int i = 0; i < numLanes; i++) {
                     score += lanes[i].update(input, accuracy);
                 }
@@ -253,5 +279,6 @@ public class ShadowDance extends AbstractGame  {
         track3 = new Track(track3.file);
         lanes = new Lane[4];
         accuracy.setAccuracy("");
+        level3 = false;
     }
 }
