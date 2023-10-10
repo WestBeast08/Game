@@ -5,17 +5,37 @@ import bagel.*;
  * Adapted fully from A1 solution by Stella Li
  */
 public class Accuracy {
-    public static final int PERFECT_SCORE = 10;
-    public static final int GOOD_SCORE = 5;
-    public static final int BAD_SCORE = -1;
+    private static final int PERFECT_SCORE = 10;
+    private static final int GOOD_SCORE = 5;
+    private static final int BAD_SCORE = -1;
+
+    /**
+     * MISS_SCORE is the negative score deducted for attempting to hit non-special normal
+     * and hold notes between the BAD_RADIUS and MISS_RADIUS or when the note goes off-screen.
+     * MISS_SCORE is public to work with the unique case of missing the presses and releases of hold notes.
+     */
     public static final int MISS_SCORE = -5;
+
+    /**
+     * NOT_SCORE represents the idea that non-special notes and special notes are not registered by a press
+     * when the note is outside the MISS_RADIUS or SPECIAL_RADIUS respectively
+     */
     public static final int NOT_SCORED = 0;
-    public static final String PERFECT = "PERFECT";
-    public static final String GOOD = "GOOD";
-    public static final String BAD = "BAD";
+    private static final String PERFECT = "PERFECT";
+    private static final String GOOD = "GOOD";
+    private static final String BAD = "BAD";
+
+    /**
+     * MISS is the message string shown on screen when the MISS_SCORE is deducted from the player.
+     * Similarly, MISS is public to work with the unique case of missing the presses and releases of hold notes.
+     */
     public static final String MISS = "MISS";
     private static final int PERFECT_RADIUS = 15;
     private static final int GOOD_RADIUS = 50;
+
+    /**
+     * SPECIAL_RADIUS is the radius for which attempts at any type of special note are counted
+     */
     public static final int SPECIAL_RADIUS = 50;
     private static final int BAD_RADIUS = 100;
     private static final int MISS_RADIUS = 200;
@@ -24,13 +44,12 @@ public class Accuracy {
     private String currAccuracy = null;
     private int frameCount = 0;
     private int doubleCount = 0;
-    public static final String DOUBLE_SCORE = "Double Score";
-    public static final String SPEED_UP = "Speed Up";
-    public static final String SLOW_DOWN = "Slow Down";
-    public static final String LANE_CLEAR = "Lane Clear";
-    private static final int DOUBLE_FRAMES = 450;
+    private static final int DOUBLE_FRAMES = 480;
     private boolean doubleScore = false;
 
+    /**
+     * Set the message to be displayed that accompanies either the score changes or special note activations
+     */
     public void setAccuracy(String accuracy) {
         currAccuracy = accuracy;
         frameCount = 0;
@@ -77,8 +96,8 @@ public class Accuracy {
         doubleCount++;
         if (currAccuracy != null && frameCount < RENDER_FRAMES) {
             ACCURACY_FONT.drawString(currAccuracy,
-                    Window.getWidth()/2 - ACCURACY_FONT.getWidth(currAccuracy)/2,
-                    Window.getHeight()/2);
+                    Window.getWidth()/2.0 - ACCURACY_FONT.getWidth(currAccuracy)/2,
+                    Window.getHeight()/2.0);
         }
         if (doubleCount > DOUBLE_FRAMES) {
             doubleScore = false;

@@ -8,9 +8,10 @@ import java.util.ArrayList;
  * Skeleton Code for SWEN20003 Project 2, Semester 2, 2023
  * Please enter your name below
  * @author Leo Brooks
+ *
+ * ShadowDance class works with all elements of the game to bring everything together
+ * Adapted from A1 solution by Stella Li
  */
-
-// ShadowDance code adapted from full A1 solution by Stella Li
 public class ShadowDance extends AbstractGame  {
     private final static int WINDOW_WIDTH = 1024;
     private final static int WINDOW_HEIGHT = 768;
@@ -19,6 +20,11 @@ public class ShadowDance extends AbstractGame  {
     private final static String LEVEL_1_CSV = "res/level1.csv";
     private final static String LEVEL_2_CSV = "res/level2.csv";
     private final static String LEVEL_3_CSV = "res/level3.csv";
+
+    /**
+     *  FONT_FILE contains the string for the file name of the font
+     *  used in all instances of text
+     */
     public final static String FONT_FILE = "res/FSO8BITR.TTF";
     private final static int TITLE_X = 220;
     private final static int TITLE_Y = 250;
@@ -39,7 +45,8 @@ public class ShadowDance extends AbstractGame  {
     private static final String TRY_AGAIN_MESSAGE = "TRY AGAIN";
     private static final String RETURN_MESSAGE = "Press space to return to level selection";
     private final Accuracy accuracy = new Accuracy();
-    private Lane[] lanes = new Lane[4];
+    private static final int MAX_LANES = 4;
+    private Lane[] lanes = new Lane[MAX_LANES];
     private int numLanes = 0;
     private int score = 0;
     private static int currFrame = 0;
@@ -58,7 +65,11 @@ public class ShadowDance extends AbstractGame  {
     private boolean level3 = false;
     private ArrayList<Enemy> currentEnemies = new ArrayList<>();
     private Enemy currentTarget = new Enemy();
+    private final static int ENEMY_SPAWN_FRAME = 600;
 
+    /**
+     * Creates a game instance using the AbstractGame from Bagel
+     */
     public ShadowDance(){
         super(WINDOW_WIDTH, WINDOW_HEIGHT, GAME_TITLE);
     }
@@ -98,32 +109,32 @@ public class ShadowDance extends AbstractGame  {
 
                     if (lane != null) {
                         String type = splitText[1];
-                        Note note;
+                        NormalNote normalNote;
                         switch (type) {
                             case "Normal":
-                                note = new Note(dir, Integer.parseInt(splitText[2]), lane);
-                                lane.addNote(note);
+                                normalNote = new NormalNote(dir, Integer.parseInt(splitText[2]), lane);
+                                lane.addNote(normalNote);
                                 break;
                             case "Hold":
-                                HoldNote holdNote = new HoldNote(dir, Integer.parseInt(splitText[2]), lane);
+                                HoldNote holdNote = new HoldNote(dir, Integer.parseInt(splitText[2]));
                                 lane.addHoldNote(holdNote);
                                 break;
                             //case for all 4 special notes (inherited from normal notes)
                             case "DoubleScore":
-                                note = new DoubleScoreNote(type, Integer.parseInt(splitText[2]), lane);
-                                lane.addNote(note);
+                                normalNote = new DoubleScoreNote(type, Integer.parseInt(splitText[2]), lane);
+                                lane.addNote(normalNote);
                                 break;
                             case "Bomb":
-                                note = new BombNote(type, Integer.parseInt(splitText[2]), lane);
-                                lane.addNote(note);
+                                normalNote = new BombNote(type, Integer.parseInt(splitText[2]), lane);
+                                lane.addNote(normalNote);
                                 break;
                             case "SpeedUp":
-                                note = new SpeedUpNote(type, Integer.parseInt(splitText[2]), lane);
-                                lane.addNote(note);
+                                normalNote = new SpeedUpNote(type, Integer.parseInt(splitText[2]), lane);
+                                lane.addNote(normalNote);
                                 break;
                             case "SlowDown":
-                                note = new SlowDownNote(type, Integer.parseInt(splitText[2]), lane);
-                                lane.addNote(note);
+                                normalNote = new SlowDownNote(type, Integer.parseInt(splitText[2]), lane);
+                                lane.addNote(normalNote);
                                 break;
                             default:
                                 throw new IllegalStateException("Unexpected value: " + type);
@@ -218,33 +229,36 @@ public class ShadowDance extends AbstractGame  {
                 for (int i = 0; i < numLanes; i++) {
                     lanes[i].draw();
                 }
-                guardian.paused();
-                for(Enemy i: currentEnemies) {
-                    if(!i.isCompleted()){
-                        i.draw();
+                if(level3){
+                    guardian.paused();
+                    for(Enemy i: currentEnemies) {
+                        if(i.isActive()){
+                            i.draw();
+                        }
                     }
                 }
+
 
 
             } else {
                 currFrame++;
                 if(level3) {
-                    if(currFrame % 600 == 0 && currFrame != 0) {
+                    if(currFrame % ENEMY_SPAWN_FRAME == 0 && currFrame != 0) {
                         Enemy newEnemy = new Enemy();
                         currentEnemies.add(newEnemy);
                     }
                     guardian.draw();
                     if(input.wasPressed(Keys.LEFT_SHIFT)) {
-                        if(currFrame < 600) {
+                        if(currFrame < ENEMY_SPAWN_FRAME) {
                             guardian.fireProjectile(0, 0);
                         }
                         else {
-                            guardian.fireProjectile(currentTarget.getX(), currentTarget.getY()); //enemy locations
+                            guardian.fireProjectile(currentTarget.getX(), currentTarget.getY());
                         }
                     }
                     double min_distance = Math.hypot(WINDOW_WIDTH, WINDOW_HEIGHT);
                     for(Enemy i: currentEnemies) {
-                        if(!i.isCompleted()){
+                        if(i.isActive()){
                             i.update();
                             if(i.distanceFromGuardian() <= min_distance) {
                                 min_distance = i.distanceFromGuardian();
@@ -277,6 +291,10 @@ public class ShadowDance extends AbstractGame  {
 
     }
 
+    /**
+     * Returns the current frame of the level being played.
+     * Used for message timing and entity spawns.
+     */
     public static int getCurrFrame() {
         return currFrame;
     }
@@ -304,9 +322,11 @@ public class ShadowDance extends AbstractGame  {
         track1 = new Track(track1.file);
         track2 = new Track(track2.file);
         track3 = new Track(track3.file);
-        lanes = new Lane[4];
+        lanes = new Lane[MAX_LANES];
         accuracy.setAccuracy("");
         level3 = false;
         currentEnemies.clear();
+        NormalNote.resetSpeed();
+        HoldNote.resetSpeed();
     }
 }

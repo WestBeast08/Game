@@ -5,8 +5,32 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="f54cb9e0-0257-4c10-a2ad-e857e442774f" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Accuracy.java" beforeDir="false" afterPath="$PROJECT_DIR$/Accuracy.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BombNote.java" beforeDir="false" afterPath="$PROJECT_DIR$/BombNote.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DoubleScoreNote.java" beforeDir="false" afterPath="$PROJECT_DIR$/DoubleScoreNote.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Enemy.java" beforeDir="false" afterPath="$PROJECT_DIR$/Enemy.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Guardian.java" beforeDir="false" afterPath="$PROJECT_DIR$/Guardian.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HoldNote.java" beforeDir="false" afterPath="$PROJECT_DIR$/HoldNote.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Lane.java" beforeDir="false" afterPath="$PROJECT_DIR$/Lane.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Note.java" beforeDir="false" afterPath="$PROJECT_DIR$/Note.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Projectile.java" beforeDir="false" afterPath="$PROJECT_DIR$/Projectile.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ShadowDance.java" beforeDir="false" afterPath="$PROJECT_DIR$/ShadowDance.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SlowDownNote.java" beforeDir="false" afterPath="$PROJECT_DIR$/SlowDownNote.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SpeedUpNote.java" beforeDir="false" afterPath="$PROJECT_DIR$/SpeedUpNote.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Track.java" beforeDir="false" afterPath="$PROJECT_DIR$/Track.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../target/classes/Accuracy.class" beforeDir="false" afterPath="$PROJECT_DIR$/../target/classes/Accuracy.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../target/classes/BombNote.class" beforeDir="false" afterPath="$PROJECT_DIR$/../target/classes/BombNote.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../target/classes/DoubleScoreNote.class" beforeDir="false" afterPath="$PROJECT_DIR$/../target/classes/DoubleScoreNote.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../target/classes/Enemy.class" beforeDir="false" afterPath="$PROJECT_DIR$/../target/classes/Enemy.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../target/classes/Guardian.class" beforeDir="false" afterPath="$PROJECT_DIR$/../target/classes/Guardian.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../target/classes/HoldNote.class" beforeDir="false" afterPath="$PROJECT_DIR$/../target/classes/HoldNote.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../target/classes/Lane.class" beforeDir="false" afterPath="$PROJECT_DIR$/../target/classes/Lane.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../target/classes/Note.class" beforeDir="false" afterPath="$PROJECT_DIR$/../target/classes/Note.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../target/classes/Projectile.class" beforeDir="false" afterPath="$PROJECT_DIR$/../target/classes/Projectile.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../target/classes/ShadowDance.class" beforeDir="false" afterPath="$PROJECT_DIR$/../target/classes/ShadowDance.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../target/classes/SlowDownNote.class" beforeDir="false" afterPath="$PROJECT_DIR$/../target/classes/SlowDownNote.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../target/classes/SpeedUpNote.class" beforeDir="false" afterPath="$PROJECT_DIR$/../target/classes/SpeedUpNote.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../target/classes/Track.class" beforeDir="false" afterPath="$PROJECT_DIR$/../target/classes/Track.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

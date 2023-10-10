@@ -2,57 +2,24 @@ import bagel.*;
 
 /**
  * Class for hold notes
- * Adapted fully from A1 solution by Stella Li
+ * Adapted from A1 solution by Stella Li
  */
-public class HoldNote {
+public class HoldNote extends Note{
 
     private static final int HEIGHT_OFFSET = 82;
-    private final Image image;
-    private final int appearanceFrame;
-    private static int speed = 2;
-    private int y = 24;
-    private boolean active = false;
+    private final static int INITIAL_Y = 24;
+    private final static String HOLD_IMG_KEY = "holdNote";
     private boolean holdStarted = false;
-    private boolean completed = false;
-    private final Lane lane;
 
-    public HoldNote(String dir, int appearanceFrame, Lane lane) {
-        image = new Image("res/holdNote" + dir + ".png");
-        this.lane = lane;
-        this.appearanceFrame = appearanceFrame;
+    public HoldNote(String type, int appearanceFrame) {
+        super(HOLD_IMG_KEY, type, appearanceFrame, INITIAL_Y);
     }
 
-    public boolean isActive() {
-        return active;
-    }
-    public boolean isCompleted() {
-        return completed;
-    }
-
-    public void deactivate() {
-        active = false;
-        completed = true;
-    }
 
     public void startHold() {
         holdStarted = true;
     }
 
-    public void update() {
-        if (active) {
-            y += speed;
-        }
-
-        if (ShadowDance.getCurrFrame() >= appearanceFrame && !completed) {
-            active = true;
-        }
-    }
-
-    public void draw(int x) {
-        if (active) {
-            image.draw(x, y);
-        }
-    }
 
     /**
      * scored twice, once at the start of the hold and once at the end
@@ -89,17 +56,14 @@ public class HoldNote {
      * gets the location of the start of the note
      */
     private int getBottomHeight() {
-        return y + HEIGHT_OFFSET;
+        return getY() + HEIGHT_OFFSET;
     }
 
     /**
      * gets the location of the end of the note
      */
     private int getTopHeight() {
-        return y - HEIGHT_OFFSET;
+        return getY() - HEIGHT_OFFSET;
     }
 
-    public static void incrementSpeed(int increment) {
-        speed += increment;
-    }
 }

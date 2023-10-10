@@ -1,39 +1,31 @@
-import bagel.*;
+import bagel.Image;
+import bagel.Input;
+import bagel.Keys;
 
-/**
- * Class for normal notes
- * Adapted fully from A1 solution by Stella Li
- */
-public class Note {
+public abstract class Note {
     private final Image image;
     private final int appearanceFrame;
-    private static int speed = 2;
-    private int y = 100;
+    private final static int BASE_SPEED = 2;
+    private static int speed = BASE_SPEED;
+    private int y;
     private boolean active = false;
     private boolean completed = false;
-    private static final int DOUBLE_SCORE = 2;
-    protected final Lane lane;
-    private boolean special = false;
+    public static final int DOUBLE_SCORE = 2;
 
-    public Note(String dir, int appearanceFrame, Lane lane) {
-        image = new Image("res/note" + dir + ".png");
-        this.lane = lane;
+
+    public Note(String imgKey, String type, int appearanceFrame, int displacement) {
+        image = new Image("res/" + imgKey + type + ".png");
         this.appearanceFrame = appearanceFrame;
+        this.y = displacement;
     }
 
     public int getY() {
         return y;
     }
-
-    protected void setSpecial() {
-        special = true;
-    }
-    public boolean isSpecial(){
-        return special;
-    }
     public boolean isActive() {
         return active;
     }
+
     public boolean isCompleted() {return completed;}
 
     public void deactivate() {
@@ -57,27 +49,17 @@ public class Note {
         }
     }
 
-    public int checkScore(Input input, Accuracy accuracy, int targetHeight, Keys relevantKey) {
-        if (isActive()) {
-            // evaluate accuracy of the key press
-            int score = accuracy.evaluateScore(y, targetHeight, input.wasPressed(relevantKey));
-            //gets overriden for special notes, only calculating if distance is right, then
-
-            if (score != Accuracy.NOT_SCORED) {
-                //returning 15, speeding up/slowing down, and also setting accuracy message
-                deactivate();
-                if(accuracy.checkDoubleScore()){
-                    return score * DOUBLE_SCORE;
-                }
-                return score;
-            }
-
-        }
-        return 0;
-    }
+    /*
+     * Calculates score using Accuracy class methods
+     * This gets overridden for the special notes due to the different scoring mechanics
+     */
+    public abstract int checkScore(Input input, Accuracy accuracy, int targetHeight, Keys relevantKey);
 
     public static void incrementSpeed(int increment) {
         speed += increment;
     }
 
+    public static void resetSpeed() {
+        speed = BASE_SPEED;
+    }
 }

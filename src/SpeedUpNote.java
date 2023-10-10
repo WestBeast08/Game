@@ -2,9 +2,14 @@ import bagel.Input;
 import bagel.Keys;
 import bagel.Window;
 
-public class SpeedUpNote extends Note{
+/**
+ * Note subclass which encapsulates the specific 'Speed Up' note mechanics
+ */
+
+public class SpeedUpNote extends NormalNote {
     private static final int SPEED_UP_NOTE_SCORE = 15;
     private static final int SPEED_UP_INCREMENT = 1;
+    private static final String SPEED_UP = "Speed Up";
 
     public SpeedUpNote(String dir, int appearanceFrame, Lane lane) {
         super(dir, appearanceFrame, lane);
@@ -14,12 +19,12 @@ public class SpeedUpNote extends Note{
     @Override
     public int checkScore(Input input, Accuracy accuracy, int targetHeight, Keys relevantKey) {
         if (isActive()) {
-            // evaluate accuracy of the key press
             int distance = Math.abs(getY() - targetHeight);
+
             if (input.wasPressed(relevantKey) && distance <= Accuracy.SPECIAL_RADIUS) {
-                accuracy.setAccuracy(Accuracy.SPEED_UP);
+                accuracy.setAccuracy(SPEED_UP);
                 deactivate();
-                Note.incrementSpeed(SPEED_UP_INCREMENT);
+                NormalNote.incrementSpeed(SPEED_UP_INCREMENT);
                 HoldNote.incrementSpeed(SPEED_UP_INCREMENT);
                 return SPEED_UP_NOTE_SCORE;
             }

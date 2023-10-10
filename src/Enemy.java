@@ -1,5 +1,5 @@
 import bagel.Image;
-import bagel.util.Point;
+
 import java.lang.Math;
 
 public class Enemy {
@@ -8,8 +8,11 @@ public class Enemy {
     private final Image ENEMY_IMAGE = new Image("res/enemy.png");
     private final static int ENEMY_SPEED = 1;
     private double enemyVelocity = Math.copySign(1,(Math.random() * 2 - 1));
-    private final static int COLLISION_RADIUS = 104;
-    private boolean completed = false;
+    public final static int COLLISION_RADIUS = 104;
+    private boolean active = true;
+    private final static int MIN_BOUNDARY = 100;
+    private final static int MAX_BOUNDARY = 900;
+    private final static int REVERSE_DIRECTION = -1;
 
     public double getX() {
         return xPosition;
@@ -18,8 +21,8 @@ public class Enemy {
         return yPosition;
     }
 
-    public boolean isCompleted() {
-        return completed;
+    public boolean isActive() {
+        return active;
     }
 
     public void update() {
@@ -28,26 +31,14 @@ public class Enemy {
         draw();
     }
 
-    public double calculateDistance(Note note) {
-        return 0;
-    }
-
-    public Point getPosition() {
-        return new Point();
-    }
-
     private void checkBoundaries() {
-        if(xPosition <= 100 || xPosition >= 900) {
-            enemyVelocity *= -1;
+        if(xPosition <= MIN_BOUNDARY || xPosition >= MAX_BOUNDARY) {
+            enemyVelocity *= REVERSE_DIRECTION;
         }
     }
 
-    private void checkCollisions() {
-        //
-    }
-
     public void deactivate() {
-        completed = true;
+        active = false;
     }
 
     public void draw() {

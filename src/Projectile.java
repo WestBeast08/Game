@@ -1,6 +1,12 @@
 import bagel.DrawOptions;
 import bagel.Image;
+import bagel.Window;
+
 import java.lang.Math;
+
+/**
+ * Class for Projectiles fired from the Guardian which targets Enemies
+ */
 
 public class Projectile {
     private double xPosition = Guardian.GUARDIAN_X;
@@ -9,11 +15,12 @@ public class Projectile {
     private final static int PROJECTILE_SPEED = 6;
     private final double angle;
     private final static DrawOptions ROTATION = new DrawOptions();
-    private boolean completed = false;
+    private boolean active = true;
     public final static int COLLISION_RADIUS = 62;
+    private final static int WINDOW_START = 0;
 
-    public boolean isCompleted() {
-        return completed;
+    public boolean isActive() {
+        return active;
     }
 
     public double getX() {
@@ -24,17 +31,24 @@ public class Projectile {
     }
 
     public Projectile(double targetX, double targetY) {
-        angle = Math.atan((targetY-yPosition)/(targetX-xPosition)) + Math.PI;
+
+        // Projectile is angled towards the closest enemy at moment of spawn
+        angle = Math.abs(Math.atan((targetY-yPosition)/(targetX-xPosition))) + Math.PI;
     }
 
     public void update() {
         xPosition += PROJECTILE_SPEED * Math.cos(angle);
         yPosition += PROJECTILE_SPEED * Math.sin(angle);
-        draw();
+        if(xPosition < Window.getWidth() && xPosition > WINDOW_START && yPosition < Window.getHeight() && yPosition > WINDOW_START) {
+            draw();
+        }
+        else {
+            deactivate();
+        }
     }
 
     public void deactivate() {
-        completed = true;
+        active = false;
     }
 
     public void draw() {

@@ -9,7 +9,7 @@ public class Lane {
     private static final int TARGET_HEIGHT = 657;
     private final String type;
     private final Image image;
-    private final Note[] notes = new Note[100];
+    private final NormalNote[] normalNotes = new NormalNote[100];
     private int numNotes = 0;
     private final HoldNote[] holdNotes = new HoldNote[20];
     private int numHoldNotes = 0;
@@ -58,7 +58,7 @@ public class Lane {
         draw();
 
         for (int i = currNote; i < numNotes; i++) {
-            notes[i].update();
+            normalNotes[i].update();
         }
 
         for (int j = currHoldNote; j < numHoldNotes; j++) {
@@ -66,8 +66,8 @@ public class Lane {
         }
 
         if (currNote < numNotes) {
-            int score = notes[currNote].checkScore(input, accuracy, TARGET_HEIGHT, relevantKey);
-            if (notes[currNote].isCompleted()) {
+            int score = normalNotes[currNote].checkScore(input, accuracy, TARGET_HEIGHT, relevantKey);
+            if (normalNotes[currNote].isCompleted()) {
                 currNote++;
                 return score;
             }
@@ -84,8 +84,8 @@ public class Lane {
         return Accuracy.NOT_SCORED;
     }
 
-    public void addNote(Note n) {
-        notes[numNotes++] = n;
+    public void addNote(NormalNote n) {
+        normalNotes[numNotes++] = n;
     }
 
     public void addHoldNote(HoldNote hn) {
@@ -97,7 +97,7 @@ public class Lane {
      */
     public boolean isFinished() {
         for (int i = 0; i < numNotes; i++) {
-            if (!notes[i].isCompleted()) {
+            if (!normalNotes[i].isCompleted()) {
                 return false;
             }
         }
@@ -118,7 +118,7 @@ public class Lane {
         image.draw(location, HEIGHT);
 
         for (int i = currNote; i < numNotes; i++) {
-            notes[i].draw(location);
+            normalNotes[i].draw(location);
         }
 
         for (int j = currHoldNote; j < numHoldNotes; j++) {
@@ -128,8 +128,8 @@ public class Lane {
 
     private void clearLane() {
         for(int i = currNote; i < numNotes; i++) {
-            if(notes[i].isActive()) {
-                notes[i].deactivate();
+            if(normalNotes[i].isActive()) {
+                normalNotes[i].deactivate();
             }
         }
         for(int j = currHoldNote; j < numHoldNotes; j++) {
@@ -145,9 +145,9 @@ public class Lane {
 
     public void checkCollisions(double enemyX, double enemyY) {
         for(int i = currNote; i < numNotes; i++) {
-            if(notes[i].isActive() && !notes[i].isSpecial()) {
-                if(Math.hypot(Math.abs(enemyX - location), Math.abs(enemyY - notes[i].getY())) <= 104){
-                    notes[i].deactivate();
+            if(normalNotes[i].isActive() && !normalNotes[i].isSpecial()) {
+                if(Math.hypot(Math.abs(enemyX - location), Math.abs(enemyY - normalNotes[i].getY())) <= Enemy.COLLISION_RADIUS){
+                    normalNotes[i].deactivate();
                 }
             }
         }

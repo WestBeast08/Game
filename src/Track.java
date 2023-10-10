@@ -2,8 +2,9 @@ import javax.sound.sampled.*;
 
 /**
  * Class for managing the music being played in the background
- * Adapted fully from A1 solution by Stella Li
+ * Class is provided in the assignment spec
  */
+
 public class Track extends Thread {
     private AudioInputStream stream;
     private Clip clip;

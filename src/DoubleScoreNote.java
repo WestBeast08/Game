@@ -2,8 +2,13 @@ import bagel.Input;
 import bagel.Keys;
 import bagel.Window;
 
-public class DoubleScoreNote extends Note{
+/**
+ * Note subclass which encapsulates the specific 'Double Score' note mechanics
+ */
+
+public class DoubleScoreNote extends NormalNote {
     private static final int DOUBLE_NOTE_SCORE = 0;
+    private static final String DOUBLE_SCORE = "Double Score";
 
     public DoubleScoreNote(String dir, int appearanceFrame, Lane lane) {
         super(dir, appearanceFrame, lane);
@@ -13,10 +18,10 @@ public class DoubleScoreNote extends Note{
     @Override
     public int checkScore(Input input, Accuracy accuracy, int targetHeight, Keys relevantKey) {
         if (isActive()) {
-            // evaluate accuracy of the key press
             int distance = Math.abs(getY() - targetHeight);
+
             if (input.wasPressed(relevantKey) && distance <= Accuracy.SPECIAL_RADIUS) {
-                accuracy.setAccuracy(Accuracy.DOUBLE_SCORE);
+                accuracy.setAccuracy(DOUBLE_SCORE);
                 deactivate();
                 accuracy.activateDoubleScore();
                 return DOUBLE_NOTE_SCORE;

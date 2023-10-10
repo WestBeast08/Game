@@ -6,7 +6,7 @@ public class Guardian {
     public static final int GUARDIAN_X = 800;
     public static final int GUARDIAN_Y = 600;
     private final Image GUARDIAN_IMAGE = new Image("res/guardian.png");
-    private ArrayList<Projectile> currentProjectiles = new ArrayList<>();
+    private final ArrayList<Projectile> currentProjectiles = new ArrayList<>();
 
     public void fireProjectile(double targetX, double targetY) {
         Projectile newProjectile = new Projectile(targetX, targetY);
@@ -15,7 +15,7 @@ public class Guardian {
 
     public void update() {
         for(Projectile i: currentProjectiles) {
-            if(!i.isCompleted()) {
+            if(i.isActive()) {
                 i.update();
             }
         }
@@ -24,7 +24,7 @@ public class Guardian {
     public void paused() {
         draw();
         for(Projectile i: currentProjectiles) {
-            if(!i.isCompleted()) {
+            if(i.isActive()) {
                 i.draw();
             }
         }
@@ -36,7 +36,7 @@ public class Guardian {
 
     public boolean checkCollisions(double enemyX, double enemyY) {
         for(Projectile i: currentProjectiles) {
-            if(!i.isCompleted()) {
+            if(i.isActive()) {
                 if(Math.hypot(Math.abs(enemyX - i.getX()), Math.abs(enemyY - i.getY())) <= Projectile.COLLISION_RADIUS) {
                     i.deactivate();
                     return true;
