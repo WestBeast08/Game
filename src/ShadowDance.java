@@ -45,7 +45,7 @@ public class ShadowDance extends AbstractGame  {
     private static final String TRY_AGAIN_MESSAGE = "TRY AGAIN";
     private static final String RETURN_MESSAGE = "Press space to return to level selection";
     private final Accuracy accuracy = new Accuracy();
-    private static final int MAX_LANES = 4;
+    private static final int MAX_LANES = 5;
     private Lane[] lanes = new Lane[MAX_LANES];
     private int numLanes = 0;
     private int score = 0;

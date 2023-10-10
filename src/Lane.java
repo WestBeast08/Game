@@ -1,17 +1,18 @@
 import bagel.*;
+import java.util.ArrayList;
 
 /**
  * Class for the lanes which notes fall down
- * Adapted fully from A1 solution by Stella Li
+ * Adapted from A1 solution by Stella Li
  */
 public class Lane {
     private static final int HEIGHT = 384;
     private static final int TARGET_HEIGHT = 657;
     private final String type;
     private final Image image;
-    private final NormalNote[] normalNotes = new NormalNote[100];
+    private final ArrayList<NormalNote> normalNotes = new ArrayList<>();
     private int numNotes = 0;
-    private final HoldNote[] holdNotes = new HoldNote[20];
+    private final ArrayList<HoldNote> holdNotes = new ArrayList<>();
     private int numHoldNotes = 0;
     private Keys relevantKey;
     private final int location;
@@ -57,25 +58,25 @@ public class Lane {
 
         draw();
 
-        for (int i = currNote; i < numNotes; i++) {
-            normalNotes[i].update();
+        for(NormalNote i: normalNotes) {
+            i.update();
         }
 
-        for (int j = currHoldNote; j < numHoldNotes; j++) {
-            holdNotes[j].update();
+        for(HoldNote j: holdNotes) {
+            j.update();
         }
 
         if (currNote < numNotes) {
-            int score = normalNotes[currNote].checkScore(input, accuracy, TARGET_HEIGHT, relevantKey);
-            if (normalNotes[currNote].isCompleted()) {
+            int score = normalNotes.get(currNote).checkScore(input, accuracy, TARGET_HEIGHT, relevantKey);
+            if (normalNotes.get(currNote).isCompleted()) {
                 currNote++;
                 return score;
             }
         }
 
         if (currHoldNote < numHoldNotes) {
-            int score = holdNotes[currHoldNote].checkScore(input, accuracy, TARGET_HEIGHT, relevantKey);
-            if (holdNotes[currHoldNote].isCompleted()) {
+            int score = holdNotes.get(currHoldNote).checkScore(input, accuracy, TARGET_HEIGHT, relevantKey);
+            if (holdNotes.get(currHoldNote).isCompleted()) {
                 currHoldNote++;
             }
             return score;
@@ -85,11 +86,13 @@ public class Lane {
     }
 
     public void addNote(NormalNote n) {
-        normalNotes[numNotes++] = n;
+        normalNotes.add(n);
+        numNotes++;
     }
 
     public void addHoldNote(HoldNote hn) {
-        holdNotes[numHoldNotes++] = hn;
+        holdNotes.add(hn);
+        numHoldNotes++;
     }
 
     /**
@@ -97,13 +100,13 @@ public class Lane {
      */
     public boolean isFinished() {
         for (int i = 0; i < numNotes; i++) {
-            if (!normalNotes[i].isCompleted()) {
+            if (!normalNotes.get(i).isCompleted()) {
                 return false;
             }
         }
 
         for (int j = 0; j < numHoldNotes; j++) {
-            if (!holdNotes[j].isCompleted()) {
+            if (!holdNotes.get(j).isCompleted()) {
                 return false;
             }
         }
@@ -117,24 +120,28 @@ public class Lane {
     public void draw() {
         image.draw(location, HEIGHT);
 
-        for (int i = currNote; i < numNotes; i++) {
-            normalNotes[i].draw(location);
+        for(NormalNote i: normalNotes) {
+            if(i.isActive()) {
+                i.draw(location);
+            }
         }
 
-        for (int j = currHoldNote; j < numHoldNotes; j++) {
-            holdNotes[j].draw(location);
+        for(HoldNote j: holdNotes) {
+            if(j.isActive()) {
+                j.draw(location);
+            }
         }
     }
 
     private void clearLane() {
         for(int i = currNote; i < numNotes; i++) {
-            if(normalNotes[i].isActive()) {
-                normalNotes[i].deactivate();
+            if(normalNotes.get(i).isActive()) {
+                normalNotes.get(i).deactivate();
             }
         }
         for(int j = currHoldNote; j < numHoldNotes; j++) {
-            if(holdNotes[j].isActive()) {
-                holdNotes[j].deactivate();
+            if(holdNotes.get(j).isActive()) {
+                holdNotes.get(j).deactivate();
             }
         }
     }
@@ -143,11 +150,12 @@ public class Lane {
         activeBomb = true;
     }
 
+    // For every note in the lane we have to check if it is in the collision range of an enemy, removing it if it is.
     public void checkCollisions(double enemyX, double enemyY) {
         for(int i = currNote; i < numNotes; i++) {
-            if(normalNotes[i].isActive() && !normalNotes[i].isSpecial()) {
-                if(Math.hypot(Math.abs(enemyX - location), Math.abs(enemyY - normalNotes[i].getY())) <= Enemy.COLLISION_RADIUS){
-                    normalNotes[i].deactivate();
+            if(normalNotes.get(i).isActive() && !normalNotes.get(i).isSpecial()) {
+                if(Math.hypot(Math.abs(enemyX - location), Math.abs(enemyY - normalNotes.get(i).getY())) <= Enemy.COLLISION_RADIUS){
+                    normalNotes.get(i).deactivate();
                 }
             }
         }

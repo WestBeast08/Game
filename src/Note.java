@@ -2,6 +2,10 @@ import bagel.Image;
 import bagel.Input;
 import bagel.Keys;
 
+/**
+ * Superclass encapsulating all common properties among various note type entities.
+ * Some code is adapted from A1 solution by Stella Li.
+ */
 public abstract class Note {
     private final Image image;
     private final int appearanceFrame;
@@ -49,10 +53,6 @@ public abstract class Note {
         }
     }
 
-    /*
-     * Calculates score using Accuracy class methods
-     * This gets overridden for the special notes due to the different scoring mechanics
-     */
     public abstract int checkScore(Input input, Accuracy accuracy, int targetHeight, Keys relevantKey);
 
     public static void incrementSpeed(int increment) {

@@ -22,7 +22,8 @@ public class HoldNote extends Note{
 
 
     /**
-     * scored twice, once at the start of the hold and once at the end
+     * Hold note scored twice, once at the start of the hold and once at the end.
+     * If the note is initially missed, then the opportunity to attempt a "hold" is lost.
      */
     public int checkScore(Input input, Accuracy accuracy, int targetHeight, Keys relevantKey) {
         if (isActive() && !holdStarted) {
@@ -52,16 +53,10 @@ public class HoldNote extends Note{
         return 0;
     }
 
-    /**
-     * gets the location of the start of the note
-     */
     private int getBottomHeight() {
         return getY() + HEIGHT_OFFSET;
     }
 
-    /**
-     * gets the location of the end of the note
-     */
     private int getTopHeight() {
         return getY() - HEIGHT_OFFSET;
     }
