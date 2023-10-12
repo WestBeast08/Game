@@ -31,22 +31,24 @@ public class HoldNote extends Note{
 
             if (score == Accuracy.MISS_SCORE) {
                 deactivate();
-                return score;
-            } else if (score != Accuracy.NOT_SCORED) {
-                startHold();
-                return score;
             }
-        } else if (isActive() && holdStarted) {
+            else if (score != Accuracy.NOT_SCORED) {
+                startHold();
+            }
+            return score * accuracy.checkScoreMultiplier();
+        }
+
+        else if (isActive() && holdStarted) {
 
             int score = accuracy.evaluateScore(getTopHeight(), targetHeight, input.wasReleased(relevantKey));
 
             if (score != Accuracy.NOT_SCORED) {
                 deactivate();
-                return score;
+                return score * accuracy.checkScoreMultiplier();
             } else if (input.wasReleased(relevantKey)) {
                 deactivate();
                 accuracy.setAccuracy(Accuracy.MISS);
-                return Accuracy.MISS_SCORE;
+                return Accuracy.MISS_SCORE * accuracy.checkScoreMultiplier();
             }
         }
 

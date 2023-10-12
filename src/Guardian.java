@@ -46,4 +46,11 @@ public class Guardian {
         return false;
     }
 
+    /**
+     * Once there are no active enemies on the screen, all projectiles are removed to improve performance (as per ED #470)
+     */
+    public void removeProjectiles() {
+        currentProjectiles.clear();
+    }
+
 }

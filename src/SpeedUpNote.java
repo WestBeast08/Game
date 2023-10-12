@@ -24,9 +24,8 @@ public class SpeedUpNote extends NormalNote {
             if (input.wasPressed(relevantKey) && distance <= Accuracy.SPECIAL_RADIUS) {
                 accuracy.setAccuracy(SPEED_UP);
                 deactivate();
-                NormalNote.incrementSpeed(SPEED_UP_INCREMENT);
-                HoldNote.incrementSpeed(SPEED_UP_INCREMENT);
-                return SPEED_UP_NOTE_SCORE;
+                Note.incrementSpeed(SPEED_UP_INCREMENT);
+                return SPEED_UP_NOTE_SCORE * accuracy.checkScoreMultiplier();
             }
             else if (getY() >= (Window.getHeight())) {
                 deactivate();

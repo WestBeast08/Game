@@ -24,9 +24,8 @@ public class SlowDownNote extends NormalNote {
             if (input.wasPressed(relevantKey) && distance <= Accuracy.SPECIAL_RADIUS) {
                 accuracy.setAccuracy(SLOW_DOWN);
                 deactivate();
-                NormalNote.incrementSpeed(SLOW_DOWN_INCREMENT);
-                HoldNote.incrementSpeed(SLOW_DOWN_INCREMENT);
-                return SLOW_DOWN_NOTE_SCORE;
+                Note.incrementSpeed(SLOW_DOWN_INCREMENT);
+                return SLOW_DOWN_NOTE_SCORE * accuracy.checkScoreMultiplier();
             }
             else if (getY() >= (Window.getHeight())) {
                 deactivate();

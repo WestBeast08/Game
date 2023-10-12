@@ -32,10 +32,7 @@ public class NormalNote extends Note{
 
             if (score != Accuracy.NOT_SCORED) {
                 deactivate();
-                if(accuracy.checkDoubleScore()){
-                    return score * Note.DOUBLE_SCORE;
-                }
-                return score;
+                return score * accuracy.checkScoreMultiplier();
             }
 
         }

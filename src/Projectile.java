@@ -18,6 +18,7 @@ public class Projectile {
     private boolean active = true;
     public final static int COLLISION_RADIUS = 62;
     private final static int WINDOW_START = 0;
+    private final static double HALF_PI = Math.PI/2;
 
     public boolean isActive() {
         return active;
@@ -33,7 +34,8 @@ public class Projectile {
     public Projectile(double targetX, double targetY) {
 
         // Projectile is angled towards the closest enemy at moment of spawn
-        angle = Math.abs(Math.atan((targetY-yPosition)/(targetX-xPosition))) + Math.PI;
+        double baseAngle = Math.atan((targetY-yPosition)/(targetX-xPosition));
+        angle = baseAngle + HALF_PI + (HALF_PI * Math.signum(baseAngle));
     }
 
     public void update() {

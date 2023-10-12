@@ -17,9 +17,9 @@ public class ShadowDance extends AbstractGame  {
     private final static int WINDOW_HEIGHT = 768;
     private final static String GAME_TITLE = "SHADOW DANCE";
     private final Image BACKGROUND_IMAGE = new Image("res/background.png");
-    private final static String LEVEL_1_CSV = "res/level1.csv";
-    private final static String LEVEL_2_CSV = "res/level2.csv";
-    private final static String LEVEL_3_CSV = "res/level3.csv";
+    private final static String LEVEL_1_CSV = "res/test1.csv";
+    private final static String LEVEL_2_CSV = "res/test2.csv";
+    private final static String LEVEL_3_CSV = "res/test3.csv";
 
     /**
      *  FONT_FILE contains the string for the file name of the font
@@ -62,8 +62,9 @@ public class ShadowDance extends AbstractGame  {
     private boolean paused = false;
     private final static int RESTART = 0;
     private final Guardian guardian = new Guardian();
-    private boolean level3 = false;
-    private ArrayList<Enemy> currentEnemies = new ArrayList<>();
+    private boolean isLevel3 = false;
+    private final Level3 level3 = new Level3();
+    private final ArrayList<Enemy> currentEnemies = new ArrayList<>();
     private Enemy currentTarget = new Enemy();
     private final static int ENEMY_SPAWN_FRAME = 600;
 
@@ -192,7 +193,7 @@ public class ShadowDance extends AbstractGame  {
                 menu.pause();
                 levelTrack = track3;
                 levelTrack.start();
-                level3 = true;
+                isLevel3 = true;
                 clearScore = LEVEL_3_CLEAR;
             }
         } else if (finished) {
@@ -229,7 +230,7 @@ public class ShadowDance extends AbstractGame  {
                 for (int i = 0; i < numLanes; i++) {
                     lanes[i].draw();
                 }
-                if(level3){
+                if(isLevel3){
                     guardian.paused();
                     for(Enemy i: currentEnemies) {
                         if(i.isActive()){
@@ -242,38 +243,8 @@ public class ShadowDance extends AbstractGame  {
 
             } else {
                 currFrame++;
-                if(level3) {
-                    if(currFrame % ENEMY_SPAWN_FRAME == 0 && currFrame != 0) {
-                        Enemy newEnemy = new Enemy();
-                        currentEnemies.add(newEnemy);
-                    }
-                    guardian.draw();
-                    if(input.wasPressed(Keys.LEFT_SHIFT)) {
-                        if(currFrame < ENEMY_SPAWN_FRAME) {
-                            guardian.fireProjectile(0, 0);
-                        }
-                        else {
-                            guardian.fireProjectile(currentTarget.getX(), currentTarget.getY());
-                        }
-                    }
-                    double min_distance = Math.hypot(WINDOW_WIDTH, WINDOW_HEIGHT);
-                    for(Enemy i: currentEnemies) {
-                        if(i.isActive()){
-                            i.update();
-                            if(i.distanceFromGuardian() <= min_distance) {
-                                min_distance = i.distanceFromGuardian();
-                                currentTarget = i;
-                            }
-                            if(guardian.checkCollisions(i.getX(), i.getY())) {
-                                i.deactivate();
-                            }
-                            for(int j = 0; j < numLanes; j++) {
-                                lanes[j].checkCollisions(i.getX(), i.getY());
-                            }
-                        }
-                    }
-                    guardian.update();
-
+                if(isLevel3) {
+                    level3.update(input, lanes, numLanes);
                 }
 
                 for (int i = 0; i < numLanes; i++) {
@@ -324,7 +295,7 @@ public class ShadowDance extends AbstractGame  {
         track3 = new Track(track3.file);
         lanes = new Lane[MAX_LANES];
         accuracy.setAccuracy("");
-        level3 = false;
+        isLevel3 = false;
         currentEnemies.clear();
         NormalNote.resetSpeed();
         HoldNote.resetSpeed();

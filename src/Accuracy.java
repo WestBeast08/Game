@@ -45,7 +45,7 @@ public class Accuracy {
     private int frameCount = 0;
     private int doubleCount = 0;
     private static final int DOUBLE_FRAMES = 480;
-    private boolean doubleScore = false;
+    private int scoreMultiplier = 1;
 
     /**
      * Set the message to be displayed that accompanies either the score changes or special note activations
@@ -56,12 +56,12 @@ public class Accuracy {
     }
 
     public void activateDoubleScore() {
-        doubleScore = true;
+        scoreMultiplier *= 2;
         doubleCount = 0;
     }
 
-    public boolean checkDoubleScore(){
-        return doubleScore;
+    public int checkScoreMultiplier(){
+        return scoreMultiplier;
     }
 
     public int evaluateScore(int height, int targetHeight, boolean triggered) {
@@ -100,7 +100,7 @@ public class Accuracy {
                     Window.getHeight()/2.0);
         }
         if (doubleCount > DOUBLE_FRAMES) {
-            doubleScore = false;
+            scoreMultiplier = 1;
         }
     }
 }

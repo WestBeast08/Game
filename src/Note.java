@@ -10,6 +10,7 @@ public abstract class Note {
     private final Image image;
     private final int appearanceFrame;
     private final static int BASE_SPEED = 2;
+    private final static int MINIMUM_SPEED = 0;
     private static int speed = BASE_SPEED;
     private int y;
     private boolean active = false;
@@ -56,6 +57,11 @@ public abstract class Note {
     public abstract int checkScore(Input input, Accuracy accuracy, int targetHeight, Keys relevantKey);
 
     public static void incrementSpeed(int increment) {
+
+        // If the speed is not positive then the game becomes unplayable
+        if(speed + increment <= MINIMUM_SPEED) {
+            return;
+        }
         speed += increment;
     }
 
