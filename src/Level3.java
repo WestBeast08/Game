@@ -4,15 +4,26 @@ import bagel.Window;
 
 import java.util.ArrayList;
 
-public class Level3 {
+public class Level3 extends Level{
 
     private final static int ENEMY_SPAWN_FRAME = 600;
     private final ArrayList<Enemy> currentEnemies = new ArrayList<>();
     private final Guardian guardian = new Guardian();
     private Enemy currentTarget = new Enemy();
+    private final static String LEVEL_INFORMATION = "res/test3.csv";
+    private final static String TRACK = "res/HxH_Legend.wav";
+    private final static int CLEAR_SCORE = 350;
 
-    public void update(Input input, Lane[] lanes, int numLanes) {
-        if((ShadowDance.getCurrFrame() % ENEMY_SPAWN_FRAME == 0) && (ShadowDance.getCurrFrame() != 0)) {
+    public Level3() {
+        super(LEVEL_INFORMATION, TRACK, CLEAR_SCORE);
+    }
+    public void update(Input input) {
+        super.update(input);
+        entityUpdate(input, super.lanes, super.numLanes);
+    }
+
+    private void entityUpdate(Input input, Lane[] lanes, int numLanes) {
+        if((super.getCurrFrame() % ENEMY_SPAWN_FRAME == 0) && (super.getCurrFrame() != 0)) {
             Enemy newEnemy = new Enemy();
             currentEnemies.add(newEnemy);
         }
@@ -49,6 +60,21 @@ public class Level3 {
         }
         guardian.update();
 
+    }
+
+    public void paused() {
+        super.paused();
+        guardian.paused();
+        for(Enemy i: currentEnemies) {
+            if(i.isActive()){
+                i.draw();
+            }
+        }
+    }
+
+    public void restart() {
+        super.restart();
+        currentEnemies.clear();
     }
 
 }

@@ -17,9 +17,6 @@ public class ShadowDance extends AbstractGame  {
     private final static int WINDOW_HEIGHT = 768;
     private final static String GAME_TITLE = "SHADOW DANCE";
     private final Image BACKGROUND_IMAGE = new Image("res/background.png");
-    private final static String LEVEL_1_CSV = "res/test1.csv";
-    private final static String LEVEL_2_CSV = "res/test2.csv";
-    private final static String LEVEL_3_CSV = "res/test3.csv";
 
     /**
      *  FONT_FILE contains the string for the file name of the font
@@ -37,36 +34,19 @@ public class ShadowDance extends AbstractGame  {
     private final Font INSTRUCTION_FONT = new Font(FONT_FILE, 24);
     private final Font SCORE_FONT = new Font(FONT_FILE, 30);
     private static final String INSTRUCTIONS = "Select levels with\nnumber keys\n\n    1       2       3";
-    private static final int LEVEL_1_CLEAR = 150;
-    private static final int LEVEL_2_CLEAR = 400;
-    private static final int LEVEL_3_CLEAR = 350;
-    private int clearScore;
     private static final String CLEAR_MESSAGE = "CLEAR!";
     private static final String TRY_AGAIN_MESSAGE = "TRY AGAIN";
     private static final String RETURN_MESSAGE = "Press space to return to level selection";
-    private final Accuracy accuracy = new Accuracy();
     private static final int MAX_LANES = 5;
     private Lane[] lanes = new Lane[MAX_LANES];
     private int numLanes = 0;
     private int score = 0;
-    private static int currFrame = 0;
-    private Track track1 = new Track("res/giornos_theme.wav");
-    private Track track2 = new Track("res/Green_Beast.wav");
-    private Track track3 = new Track("res/HxH_Legend.wav");
     private Track menu = new Track("res/Wii Music.wav");
     private Track win = new Track("res/Win.wav");
     private Track lose = new Track("res/Lose.wav");
-    private Track levelTrack;
     private boolean started = false;
-    private boolean finished = false;
     private boolean paused = false;
-    private final static int RESTART = 0;
-    private final Guardian guardian = new Guardian();
-    private boolean isLevel3 = false;
-    private final Level3 level3 = new Level3();
-    private final ArrayList<Enemy> currentEnemies = new ArrayList<>();
-    private Enemy currentTarget = new Enemy();
-    private final static int ENEMY_SPAWN_FRAME = 600;
+    private Level currentLevel;
 
     /**
      * Creates a game instance using the AbstractGame from Bagel
@@ -172,34 +152,28 @@ public class ShadowDance extends AbstractGame  {
                     TITLE_X + INS_X_OFFSET, TITLE_Y + INS_Y_OFFSET);
 
             if (input.wasPressed(Keys.NUM_1)) {
-                readCsv(LEVEL_1_CSV);
+                currentLevel = new Level1();
+                currentLevel.startLevel();
                 started = true;
                 menu.pause();
-                levelTrack = track1;
-                levelTrack.start();
-                clearScore = LEVEL_1_CLEAR;
             }
             else if (input.wasPressed(Keys.NUM_2)) {
-                readCsv(LEVEL_2_CSV);
+                currentLevel = new Level2();
+                currentLevel.startLevel();
                 started = true;
                 menu.pause();
-                levelTrack = track2;
-                levelTrack.start();
-                clearScore = LEVEL_2_CLEAR;
             }
             else if (input.wasPressed(Keys.NUM_3)) {
-                readCsv(LEVEL_3_CSV);
+                currentLevel = new Level3();
+                currentLevel.startLevel();
                 started = true;
                 menu.pause();
-                levelTrack = track3;
-                levelTrack.start();
-                isLevel3 = true;
-                clearScore = LEVEL_3_CLEAR;
             }
-        } else if (finished) {
+
+        } else if (currentLevel.checkFinished()) {
             // end screen
-            levelTrack.pause();
-            if (score >= clearScore) {
+            currentLevel.endLevel();
+            if (currentLevel.getScore() >= currentLevel.clearScore) {
                 TITLE_FONT.drawString(CLEAR_MESSAGE,
                         WINDOW_WIDTH/2 - TITLE_FONT.getWidth(CLEAR_MESSAGE)/2,
                         END_MESSAGE_Y);
@@ -219,43 +193,21 @@ public class ShadowDance extends AbstractGame  {
         } else {
             // gameplay
 
-            SCORE_FONT.drawString("Score " + score, SCORE_LOCATION, SCORE_LOCATION);
+            SCORE_FONT.drawString("Score " + currentLevel.getScore(), SCORE_LOCATION, SCORE_LOCATION);
 
             if (paused) {
                 if (input.wasPressed(Keys.TAB)) {
                     paused = false;
-                    levelTrack.run();
+                    currentLevel.startTrack();
                 }
 
-                for (int i = 0; i < numLanes; i++) {
-                    lanes[i].draw();
-                }
-                if(isLevel3){
-                    guardian.paused();
-                    for(Enemy i: currentEnemies) {
-                        if(i.isActive()){
-                            i.draw();
-                        }
-                    }
-                }
-
-
+                currentLevel.paused();
 
             } else {
-                currFrame++;
-                if(isLevel3) {
-                    level3.update(input, lanes, numLanes);
-                }
-
-                for (int i = 0; i < numLanes; i++) {
-                    score += lanes[i].update(input, accuracy);
-                }
-
-                accuracy.update();
-                finished = checkFinished();
+                currentLevel.update(input);
                 if (input.wasPressed(Keys.TAB)) {
                     paused = true;
-                    levelTrack.pause();
+                    currentLevel.pauseTrack();
                 }
             }
         }
@@ -266,37 +218,15 @@ public class ShadowDance extends AbstractGame  {
      * Returns the current frame of the level being played.
      * Used for message timing and entity spawns.
      */
-    public static int getCurrFrame() {
-        return currFrame;
-    }
-
-    private boolean checkFinished() {
-        for (int i = 0; i < numLanes; i++) {
-            if (!lanes[i].isFinished()) {
-                return false;
-            }
-        }
-        return true;
-    }
 
     private void restartGame() {
         win.pause();
         lose.pause();
         started = false;
-        finished = false;
-        score = RESTART;
-        currFrame = RESTART;
-        numLanes = RESTART;
         menu = new Track(menu.file);
         win = new Track(win.file);
         lose = new Track(lose.file);
-        track1 = new Track(track1.file);
-        track2 = new Track(track2.file);
-        track3 = new Track(track3.file);
-        lanes = new Lane[MAX_LANES];
-        accuracy.setAccuracy("");
-        isLevel3 = false;
-        currentEnemies.clear();
+        currentLevel.restart();
         NormalNote.resetSpeed();
         HoldNote.resetSpeed();
     }
