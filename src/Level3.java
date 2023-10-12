@@ -66,9 +66,7 @@ public class Level3 extends Level{
         super.paused();
         guardian.paused();
         for(Enemy i: currentEnemies) {
-            if(i.isActive()){
-                i.draw();
-            }
+            i.paused();
         }
     }
 

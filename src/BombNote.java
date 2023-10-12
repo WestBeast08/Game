@@ -6,30 +6,23 @@ import bagel.Window;
  * Note subclass which encapsulates the specific 'Bomb' note mechanics
  */
 
-public class BombNote extends NormalNote {
+public class BombNote extends SpecialNote {
     private static final int BOMB_NOTE_SCORE = 0;
-    private static final String LANE_CLEAR = "Lane Clear";
+    private static final String BOMB_NOTE_MESSAGE = "Lane Clear";
 
     public BombNote(String dir, int appearanceFrame, Lane lane) {
-        super(dir, appearanceFrame, lane);
-        super.setSpecial();
+        super(dir, appearanceFrame, lane, BOMB_NOTE_SCORE, BOMB_NOTE_MESSAGE);
     }
 
     @Override
     public int checkScore(Input input, Accuracy accuracy, int targetHeight, Keys relevantKey) {
-        if (isActive()) {
-            int distance = Math.abs(getY() - targetHeight);
-
-            if (input.wasPressed(relevantKey) && distance <= Accuracy.SPECIAL_RADIUS) {
-                accuracy.setAccuracy(LANE_CLEAR);
-                deactivate();
-                lane.ActivateBomb();
-                return BOMB_NOTE_SCORE;
-            }
-            else if (getY() >= (Window.getHeight())) {
-                deactivate();
-            }
+        int score = super.checkScore(input, accuracy, targetHeight, relevantKey);
+        if(score != Accuracy.NOT_SCORED) {
+            lane.ActivateBomb();
         }
-        return Accuracy.NOT_SCORED;
+        if(score == ZERO_SCORE_NOTE) {
+            return ZERO_SCORE;
+        }
+        return score;
     }
 }

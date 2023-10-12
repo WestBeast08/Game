@@ -191,7 +191,6 @@ public class ShadowDance extends AbstractGame  {
                 restartGame();
             }
         } else {
-            // gameplay
 
             SCORE_FONT.drawString("Score " + currentLevel.getScore(), SCORE_LOCATION, SCORE_LOCATION);
 

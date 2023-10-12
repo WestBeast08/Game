@@ -2,7 +2,7 @@ import bagel.Image;
 
 import java.util.ArrayList;
 
-public class Guardian {
+public class Guardian implements Level3Creature {
     public static final int GUARDIAN_X = 800;
     public static final int GUARDIAN_Y = 600;
     private final Image GUARDIAN_IMAGE = new Image("res/guardian.png");

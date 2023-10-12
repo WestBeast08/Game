@@ -96,20 +96,12 @@ public class Level {
 
     public void update(Input input) {
         currFrame++;
-        /*if(isLevel3) {
-            level3.update(input, lanes, numLanes);
-        }*/
 
         for (int i = 0; i < numLanes; i++) {
             score += lanes[i].update(input, accuracy);
         }
 
         accuracy.update();
-        //finished = checkFinished();
-        /*if (input.wasPressed(Keys.TAB)) {
-            paused = true;
-            levelTrack.pause();
-        }*/
     }
 
     public boolean checkFinished() {

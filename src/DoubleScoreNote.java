@@ -6,30 +6,24 @@ import bagel.Window;
  * Note subclass which encapsulates the specific 'Double Score' note mechanics
  */
 
-public class DoubleScoreNote extends NormalNote {
+public class DoubleScoreNote extends SpecialNote {
     private static final int DOUBLE_NOTE_SCORE = 0;
-    private static final String DOUBLE_SCORE = "Double Score";
+    private static final String DOUBLE_SCORE_MESSAGE = "Double Score";
+
 
     public DoubleScoreNote(String dir, int appearanceFrame, Lane lane) {
-        super(dir, appearanceFrame, lane);
-        super.setSpecial();
+        super(dir, appearanceFrame, lane, DOUBLE_NOTE_SCORE, DOUBLE_SCORE_MESSAGE);
     }
 
     @Override
     public int checkScore(Input input, Accuracy accuracy, int targetHeight, Keys relevantKey) {
-        if (isActive()) {
-            int distance = Math.abs(getY() - targetHeight);
-
-            if (input.wasPressed(relevantKey) && distance <= Accuracy.SPECIAL_RADIUS) {
-                accuracy.setAccuracy(DOUBLE_SCORE);
-                deactivate();
-                accuracy.activateDoubleScore();
-                return DOUBLE_NOTE_SCORE;
-            }
-            else if (getY() >= (Window.getHeight())) {
-                deactivate();
-            }
+        int score = super.checkScore(input, accuracy, targetHeight, relevantKey);
+        if(score != Accuracy.NOT_SCORED) {
+            accuracy.activateDoubleScore();
         }
-        return Accuracy.NOT_SCORED;
+        if(score == ZERO_SCORE_NOTE) {
+            return ZERO_SCORE;
+        }
+        return score;
     }
 }
