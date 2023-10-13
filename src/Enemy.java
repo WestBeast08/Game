@@ -2,7 +2,7 @@ import bagel.Image;
 
 import java.lang.Math;
 
-public class Enemy implements Level3Creature {
+public class Enemy extends Level3Creature {
     private double xPosition = (Math.random() * 800) + 100;
     private final double yPosition = (Math.random() * 400) + 100;
     private final Image ENEMY_IMAGE = new Image("res/enemy.png");

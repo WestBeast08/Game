@@ -18,7 +18,7 @@ public class NormalNote extends Note{
      * @param lane Indicates the lane that the note will spawn in
      */
     public NormalNote(String type, int appearanceFrame, Lane lane) {
-        super(NORMAL_IMG_KEY, type, appearanceFrame, INITIAL_Y);
+        super(type, NORMAL_IMG_KEY, appearanceFrame, INITIAL_Y);
         this.lane = lane;
     }
 
@@ -27,7 +27,7 @@ public class NormalNote extends Note{
     }
 
     /** Check if a normal note is a type of special note
-     * @return boolean True if the note is special.
+     * @return boolean True if the note is special, false otherwise.
      */
     public boolean isSpecial(){
         return special;
@@ -37,7 +37,7 @@ public class NormalNote extends Note{
      * and deactivate the note if close enough, and set a score message to be shown.
      * @param input Game instance of Bagel Input class
      * @param accuracy Level instance of Accuracy class
-     * @param targetHeight Target y-position for which the player is aiming to line up the note on press/release
+     * @param targetHeight Target y-position for which the player is aiming to line up the note on press
      * @param relevantKey Specific key press required to trigger notes on a certain lane
      * @return The score to be awarded to the player
      */

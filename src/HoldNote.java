@@ -1,8 +1,10 @@
 import bagel.*;
 
-/**
- * Class for hold notes
- * Adapted from A1 solution by Stella Li
+/* Adapted from A1 solution by Stella Li
+ */
+
+/** A type of note that is pressed and held for a period of time
+ * @author Leo Brooks
  */
 public class HoldNote extends Note{
 
@@ -11,29 +13,36 @@ public class HoldNote extends Note{
     private final static String HOLD_IMG_KEY = "holdNote";
     private boolean holdStarted = false;
 
+    /** Creates a note that is pressed and held instead of immediately released
+     * @param type Indicates what type of image to use
+     * @param appearanceFrame Indicates the frame for the note to spawn
+     */
     public HoldNote(String type, int appearanceFrame) {
-        super(HOLD_IMG_KEY, type, appearanceFrame, INITIAL_Y);
+        super(type, HOLD_IMG_KEY, appearanceFrame, INITIAL_Y);
     }
 
-
-    public void startHold() {
-        holdStarted = true;
-    }
-
-
-    /**
-     * Hold note scored twice, once at the start of the hold and once at the end.
-     * If the note is initially missed, then the opportunity to attempt a "hold" is lost.
+    /** Hold note scored twice, once at the start of the hold and once at the end.
+     * Check inputs for a potential trigger, award score based on distance from target
+     * and set a score message to be shown. This is done for both a press and release
+     * where the note is deactivated after both occur.
+     * @param input Game instance of Bagel Input class
+     * @param accuracy Level instance of Accuracy class
+     * @param targetHeight Target y-position for which the player is aiming to line up the note on press/release
+     * @param relevantKey Specific key press required to trigger notes on a certain lane
+     * @return The score to be awarded to the player
      */
     public int checkScore(Input input, Accuracy accuracy, int targetHeight, Keys relevantKey) {
         if (isActive() && !holdStarted) {
             int score = accuracy.evaluateScore(getBottomHeight(), targetHeight, input.wasPressed(relevantKey));
 
+            /* If the initial press triggers a miss, no attempt at the hold is given
+             * and note is deactivated immediately
+             */
             if (score == Accuracy.MISS_SCORE) {
                 deactivate();
             }
             else if (score != Accuracy.NOT_SCORED) {
-                startHold();
+                holdStarted = true;
             }
             return score * accuracy.checkScoreMultiplier();
         }
@@ -51,8 +60,7 @@ public class HoldNote extends Note{
                 return Accuracy.MISS_SCORE * accuracy.checkScoreMultiplier();
             }
         }
-
-        return 0;
+        return Accuracy.NOT_SCORED;
     }
 
     private int getBottomHeight() {

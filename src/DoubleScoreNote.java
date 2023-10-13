@@ -23,7 +23,7 @@ public class DoubleScoreNote extends SpecialNote {
      * Also doubles are scores for a period of time if triggered.
      * @param input Game instance of Bagel Input class
      * @param accuracy Level instance of Accuracy class
-     * @param targetHeight Target y-position for which the player is aiming to line up the note on press/release
+     * @param targetHeight Target y-position for which the player is aiming to line up the note on press
      * @param relevantKey Specific key press required to trigger notes on a certain lane
      * @return int The score to be awarded to the player
      */

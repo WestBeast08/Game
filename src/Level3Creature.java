@@ -1,5 +1,5 @@
-public interface Level3Creature {
-    void update();
-    void draw();
-    void paused();
+public abstract class Level3Creature {
+    protected abstract void update();
+    protected abstract void draw();
+    protected abstract void paused();
 }

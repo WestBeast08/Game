@@ -1,5 +1,7 @@
 import bagel.*;
 
+// Adapted from A1 solution by Stella Li
+
 /**
  * Class for dealing with accuracy of pressing the notes
  * Adapted fully from A1 solution by Stella Li
@@ -25,9 +27,7 @@ public class Accuracy {
     private static final String GOOD = "GOOD";
     private static final String BAD = "BAD";
 
-    /**
-     * MISS is the message string shown on screen when the MISS_SCORE is deducted from the player.
-     * Similarly, MISS is public to work with the unique case of missing the presses and releases of hold notes.
+    /** MISS is the message string shown on screen when the MISS_SCORE is deducted from the player.
      */
     public static final String MISS = "MISS";
     private static final int PERFECT_RADIUS = 15;
@@ -42,25 +42,36 @@ public class Accuracy {
     private static final int DOUBLE_FRAMES = 480;
     private int scoreMultiplier = 1;
 
-    /**
-     * Set the message to be displayed that accompanies either the score changes or special note activations
+    /** Sets the message to be displayed that accompanies either the score changes or special note activations
      */
     public void setAccuracy(String accuracy) {
         currAccuracy = accuracy;
         frameCount = 0;
     }
 
-    // since spec does not specify how stacked double scores work,
-    // I decided to make the multiplier stack but reset the timer back to zero to allow for a building combo type experience
+    /** Doubles the current score multiplier and resets the period of that multiplier
+     */
     public void activateDoubleScore() {
+        /* Since spec does not specify how stacked double scores work, I decided to make
+         * the multiplier stack but reset the timer back to zero to allow for a building combo type experience.
+         */
         scoreMultiplier *= 2;
         doubleCount = 0;
     }
 
+    /** Checks the current score multiplier
+     * @return int The current score multiplier
+     */
     public int checkScoreMultiplier(){
         return scoreMultiplier;
     }
 
+    /** Evaluates the score by calculating the distance from note to target and assigning a score to it
+     * @param height Current y-position of the note being evaluated
+     * @param targetHeight Target y-position for which the player is aiming to line up the note on press
+     * @param triggered Specific key was pressed/released
+     * @return int The score calculated by the distance from note to target
+     */
     public int evaluateScore(int height, int targetHeight, boolean triggered) {
         int distance = Math.abs(height - targetHeight);
 
@@ -88,6 +99,8 @@ public class Accuracy {
 
     }
 
+    /** Performs a state update, rendering scoring messages and keeping track of multipliers
+     */
     public void update() {
         frameCount++;
         doubleCount++;
