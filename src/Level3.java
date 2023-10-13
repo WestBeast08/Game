@@ -17,6 +17,8 @@ public class Level3 extends Level{
     public Level3() {
         super(LEVEL_INFORMATION, TRACK, CLEAR_SCORE);
     }
+
+    @Override
     public void update(Input input) {
         super.update(input);
         entityUpdate(input, super.lanes, super.numLanes);
@@ -62,6 +64,7 @@ public class Level3 extends Level{
 
     }
 
+    @Override
     public void paused() {
         super.paused();
         guardian.paused();
@@ -70,6 +73,7 @@ public class Level3 extends Level{
         }
     }
 
+    @Override
     public void restart() {
         super.restart();
         currentEnemies.clear();

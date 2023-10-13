@@ -2,9 +2,11 @@ import bagel.Image;
 import bagel.Input;
 import bagel.Keys;
 
-/**
- * Superclass encapsulating all common properties among various note type entities.
- * Some code is adapted from A1 solution by Stella Li.
+/* Adapted from Note.java in A1 solution by Stella Li
+ */
+
+/** 
+ * @author Leo Brooks
  */
 public abstract class Note {
     private final Image image;
@@ -15,7 +17,6 @@ public abstract class Note {
     private int y;
     private boolean active = false;
     private boolean completed = false;
-    public static final int DOUBLE_SCORE = 2;
 
 
     public Note(String imgKey, String type, int appearanceFrame, int displacement) {

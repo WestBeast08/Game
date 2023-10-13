@@ -32,11 +32,6 @@ public class Accuracy {
     public static final String MISS = "MISS";
     private static final int PERFECT_RADIUS = 15;
     private static final int GOOD_RADIUS = 50;
-
-    /**
-     * SPECIAL_RADIUS is the radius for which attempts at any type of special note are counted
-     */
-    public static final int SPECIAL_RADIUS = 50;
     private static final int BAD_RADIUS = 100;
     private static final int MISS_RADIUS = 200;
     private static final Font ACCURACY_FONT = new Font(ShadowDance.FONT_FILE, 40);
@@ -55,6 +50,8 @@ public class Accuracy {
         frameCount = 0;
     }
 
+    // since spec does not specify how stacked double scores work,
+    // I decided to make the multiplier stack but reset the timer back to zero to allow for a building combo type experience
     public void activateDoubleScore() {
         scoreMultiplier *= 2;
         doubleCount = 0;

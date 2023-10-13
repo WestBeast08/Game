@@ -1,8 +1,10 @@
 import bagel.*;
 
-/**
- * Class for normal notes
- * Adapted from A1 solution by Stella Li
+/* Adapted from Note.java in A1 solution by Stella Li
+ */
+
+/** A type of note with no special properties
+ * @author Leo Brooks
  */
 public class NormalNote extends Note{
     private final static int INITIAL_Y = 100;
@@ -10,6 +12,11 @@ public class NormalNote extends Note{
     protected final Lane lane;
     private boolean special = false;
 
+    /** Creates a normal note with no special properties
+     * @param type Indicates what type of image to use
+     * @param appearanceFrame Indicates the frame for the note to spawn
+     * @param lane Indicates the lane that the note will spawn in
+     */
     public NormalNote(String type, int appearanceFrame, Lane lane) {
         super(NORMAL_IMG_KEY, type, appearanceFrame, INITIAL_Y);
         this.lane = lane;
@@ -18,13 +25,21 @@ public class NormalNote extends Note{
     protected void setSpecial() {
         special = true;
     }
+
+    /** Check if a normal note is a type of special note
+     * @return boolean True if the note is special.
+     */
     public boolean isSpecial(){
         return special;
     }
 
-    /*
-     * Calculates score using Accuracy class methods
-     * This gets overridden for the special notes due to the different scoring mechanics
+    /** Check inputs for a potential trigger, award score based on distance from target
+     * and deactivate the note if close enough, and set a score message to be shown.
+     * @param input Game instance of Bagel Input class
+     * @param accuracy Level instance of Accuracy class
+     * @param targetHeight Target y-position for which the player is aiming to line up the note on press/release
+     * @param relevantKey Specific key press required to trigger notes on a certain lane
+     * @return The score to be awarded to the player
      */
     public int checkScore(Input input, Accuracy accuracy, int targetHeight, Keys relevantKey) {
         if (isActive()) {
@@ -36,6 +51,6 @@ public class NormalNote extends Note{
             }
 
         }
-        return 0;
+        return Accuracy.NOT_SCORED;
     }
 }
