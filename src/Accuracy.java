@@ -2,24 +2,22 @@ import bagel.*;
 
 // Adapted from A1 solution by Stella Li
 
-/**
- * Class for dealing with accuracy of pressing the notes
- * Adapted fully from A1 solution by Stella Li
+/** Class for calculating base score from note distances, applying multipliers,
+ * and displaying scoring messages throughout the level.
+ *
+ * @author Leo Brooks
  */
 public class Accuracy {
     private static final int PERFECT_SCORE = 10;
     private static final int GOOD_SCORE = 5;
     private static final int BAD_SCORE = -1;
 
-    /**
-     * MISS_SCORE is the negative score deducted for attempting to hit non-special normal
+    /** MISS_SCORE is the negative score deducted for attempting to hit non-special normal
      * and hold notes between the BAD_RADIUS and MISS_RADIUS or when the note goes off-screen.
-     * MISS_SCORE is public to work with the unique case of missing the presses and releases of hold notes.
      */
     public static final int MISS_SCORE = -5;
 
-    /**
-     * NOT_SCORE represents the idea that non-special notes and special notes are not registered by a press
+    /** NOT_SCORED represents the idea that non-special notes and special notes are not registered by a press
      * when the note is outside the MISS_RADIUS or SPECIAL_RADIUS respectively
      */
     public static final int NOT_SCORED = 0;

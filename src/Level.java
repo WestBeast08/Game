@@ -1,9 +1,13 @@
 import bagel.Input;
-import bagel.Keys;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
 
+// Adapted from ShadowDance.java in A1 solution by Stella Li
+
+/** Class containing information and creation for all levels of ShadowDance
+ * @author Leo Brooks
+ */
 public class Level {
 
     private static final int MAX_LANES = 5;
@@ -15,7 +19,7 @@ public class Level {
     private static int currFrame = 0;
     private int score = 0;
     private final Accuracy accuracy = new Accuracy();
-    private boolean finished;
+    private final static int FAILURE = -1;
 
     protected Level(String csvFile, String levelTrack, int clearScore) {
         this.levelTrack = new Track(levelTrack);
@@ -23,7 +27,7 @@ public class Level {
         this.clearScore = clearScore;
     }
 
-    public void readCsv() {
+    private void readCsv() {
         try (BufferedReader br = new BufferedReader(new FileReader(levelCsv))) {
             String textRead;
             while ((textRead = br.readLine()) != null) {
@@ -83,17 +87,20 @@ public class Level {
             }
         } catch (Exception e) {
             e.printStackTrace();
-            System.exit(-1);
+            System.exit(FAILURE);
         }
     }
 
+    /** Starts level in ShadowDance
+     */
     public void startLevel() {
         readCsv();
-        //started = true;
-        //menu.pause();
         levelTrack.start();
     }
 
+    /** Performs a state update for the level
+     * @param input Game input from an instance of the Bagel Input class in ShadowDance
+     */
     public void update(Input input) {
         currFrame++;
 
@@ -104,6 +111,9 @@ public class Level {
         accuracy.update();
     }
 
+    /** Checks if the game is finished by checking if all the notes have been deactivated.
+     * @return boolean True if the game is finished, false otherwise.
+     */
     public boolean checkFinished() {
         for (int i = 0; i < numLanes; i++) {
             if (!lanes[i].isFinished()) {
@@ -113,32 +123,49 @@ public class Level {
         return true;
     }
 
+    /** Game state for the end of a level
+     */
     public void endLevel() {
         accuracy.setAccuracy("");
         levelTrack.pause();
     }
 
+    /** Gets the current score
+     * @return int The current score
+     */
     public int getScore() {
         return score;
     }
 
+    /** Level state for when the game is paused
+     */
     public void paused() {
         for (int i = 0; i < numLanes; i++) {
             lanes[i].draw();
         }
     }
 
+    /** Starts the level track
+     */
     public void startTrack() {
         levelTrack.run();
     }
+
+    /** Pauses the level track
+     */
     public void pauseTrack() {
         levelTrack.pause();
     }
 
+    /** Gets the current frame of the level
+     * @return int The current frame of the level
+     */
     public static int getCurrFrame() {
         return currFrame;
     }
 
+    /** Resets the current frame to 0
+     */
     public void restart() {
         currFrame = 0;
     }

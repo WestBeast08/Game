@@ -6,6 +6,7 @@ import java.lang.Math;
 
 /**
  * Class for Projectiles fired from the Guardian which targets Enemies
+ * @author Leo Brooks
  */
 
 public class Projectile {
@@ -20,17 +21,31 @@ public class Projectile {
     private final static int WINDOW_START = 0;
     private final static double HALF_PI = Math.PI/2;
 
+    /** Checks if the projectile is active
+     * @return boolean True if the projectile is active, false otherwise.
+     */
     public boolean isActive() {
         return active;
     }
 
+    /** Gets the x position of the projectile
+     * @return double The x position
+     */
     public double getX() {
         return xPosition;
     }
+
+    /** Gets the y position of the projectile
+     * @return double The y position
+     */
     public double getY() {
         return yPosition;
     }
 
+    /** Creates a projectile at the location of where the guardian is and aims towards the target enemy
+     * @param targetX
+     * @param targetY
+     */
     public Projectile(double targetX, double targetY) {
 
         // Projectile is angled towards the closest enemy at moment of spawn
